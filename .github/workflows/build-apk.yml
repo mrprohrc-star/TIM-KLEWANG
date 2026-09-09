@@ -17,18 +17,17 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Create Flutter Project Structure
+      - name: Install Flutter Manually
         run: |
-          flutter create . --org com.hondasales.app --project-name honda_sales_app
-          flutter pub get
+          git clone https://github.com/flutter/flutter.git --depth 1 -b stable /opt/flutter
+          echo "/opt/flutter/bin" >> $GITHUB_PATH
 
       - name: Build APK Release
-        run: flutter build apk --release
+        run: |
+          flutter config --no-analytics
+          flutter create . --org com.hondasales.app --project-name honda_sales_app
+          flutter pub get
+          flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
