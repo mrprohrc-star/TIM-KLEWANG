@@ -10,24 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Flutter Manually
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Flutter
         run: |
-          git clone https://github.com/flutter/flutter.git --depth 1 -b stable /opt/flutter
+          git clone https://github.com/flutter/flutter.git --depth 1 -b 3.24.5 /opt/flutter
           echo "/opt/flutter/bin" >> $GITHUB_PATH
 
-      - name: Build APK Release
+      - name: Generate Android Files & Build APK
         run: |
+          export PATH="/opt/flutter/bin:$PATH"
           flutter config --no-analytics
-          flutter create . --org com.hondasales.app --project-name honda_sales_app
+          flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
           flutter pub get
-          flutter build apk --release
+          flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
