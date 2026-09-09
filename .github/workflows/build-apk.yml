@@ -22,8 +22,26 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Build APK
+      - name: Generate Full Android Project & Build
         run: |
+          # Backup lib/ if exists
+          if [ -d "lib" ]; then
+            cp -r lib /tmp/user_lib
+          fi
+          
+          # Create full clean flutter skeleton
+          cd ..
+          flutter create --org com.hondasales.app --project-name honda_sales_app fresh_project
+          
+          # Copy skeleton back to current repo
+          cp -rn fresh_project/* TIM-KLEWANG/ || true
+          cd TIM-KLEWANG
+          
+          # Restore original lib/ if backup exists
+          if [ -d "/tmp/user_lib" ]; then
+            cp -r /tmp/user_lib/* lib/ || true
+          fi
+          
           flutter pub get
           flutter build apk --debug
 
