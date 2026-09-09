@@ -31,10 +31,10 @@ jobs:
           flutter config --no-analytics
           flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
           flutter pub get
-          flutter build apk --release --no-tree-shake-icons
+          flutter build apk --debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Honda-Sales-App
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
