@@ -20,13 +20,10 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'
           channel: 'stable'
 
-      - name: Accept Android Licenses & Generate App
+      - name: Build APK
         run: |
-          yes | flutter doctor --android-licenses || true
-          flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
           flutter pub get
           flutter build apk --debug
 
