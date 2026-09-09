@@ -20,18 +20,33 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.24.5'
           channel: 'stable'
 
-      - name: Build Debug APK
+      - name: Create Clean Project & Compile APK
         run: |
-          rm -rf android build
-          flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
+          # 1. Simpan kode main.dart buatan kamu
+          mkdir -p /tmp/backup_code
+          cp -r lib /tmp/backup_code/
+          
+          # 2. Buat proyek Flutter baru dari nol yang fresh
+          cd /tmp
+          flutter create --org com.hondasales.app --project-name honda_sales_app my_app
+          
+          # 3. Masukkan kode kamu ke proyek baru
+          cp -r /tmp/backup_code/lib/* /tmp/my_app/lib/
+          
+          # 4. Pindah ke folder app dan build APK
+          cd /tmp/my_app
           flutter pub get
-          flutter analyze || true
-          flutter build apk --debug --verbose
+          flutter build apk --debug
+
+          # 5. Salin APK hasil jadi ke workspace repo agar bisa di-upload
+          mkdir -p $GITHUB_WORKSPACE/output_apk
+          cp build/app/outputs/flutter-apk/app-debug.apk $GITHUB_WORKSPACE/output_apk/Honda-Sales.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Honda-Sales-App
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          path: output_apk/Honda-Sales.apk
