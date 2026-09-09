@@ -17,18 +17,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: 'stable'
 
-      - name: Install Flutter
+      - name: Accept Android Licenses & Generate App
         run: |
-          git clone https://github.com/flutter/flutter.git --depth 1 -b 3.24.5 /opt/flutter
-          echo "/opt/flutter/bin" >> $GITHUB_PATH
-
-      - name: Generate Android Files & Build APK
-        run: |
-          export PATH="/opt/flutter/bin:$PATH"
-          flutter config --no-analytics
+          yes | flutter doctor --android-licenses || true
           flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
           flutter pub get
           flutter build apk --debug
