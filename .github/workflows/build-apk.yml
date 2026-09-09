@@ -17,21 +17,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.22.2'
           channel: 'stable'
-          cache: true
 
       - name: Build Debug APK
         run: |
-          rm -rf android build .dart_tool
+          rm -rf android build
           flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
           flutter pub get
-          flutter build apk --debug --suppress-analytics
+          flutter build apk --debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
