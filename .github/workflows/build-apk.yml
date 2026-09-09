@@ -17,33 +17,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
 
-      - name: Generate Full Android Project & Build
+      - name: Build Debug APK
         run: |
-          # Backup lib/ if exists
-          if [ -d "lib" ]; then
-            cp -r lib /tmp/user_lib
-          fi
-          
-          # Create full clean flutter skeleton
-          cd ..
-          flutter create --org com.hondasales.app --project-name honda_sales_app fresh_project
-          
-          # Copy skeleton back to current repo
-          cp -rn fresh_project/* TIM-KLEWANG/ || true
-          cd TIM-KLEWANG
-          
-          # Restore original lib/ if backup exists
-          if [ -d "/tmp/user_lib" ]; then
-            cp -r /tmp/user_lib/* lib/ || true
-          fi
-          
+          rm -rf android build .dart_tool
+          flutter create . --org com.hondasales.app --project-name honda_sales_app --platforms=android
           flutter pub get
-          flutter build apk --debug
+          flutter build apk --debug --suppress-analytics
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
