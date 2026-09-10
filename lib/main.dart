@@ -160,12 +160,10 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
   late TextEditingController _dpController;
   late TextEditingController _diskonDpController;
 
-  // File Foto Dokumen
   File? _ktpFile;
   File? _kkFile;
   bool _isProcessingOcr = false;
 
-  // Controller Form Data Pemohon
   final TextEditingController _namaPemohonController = TextEditingController();
   final TextEditingController _nikKtpController = TextEditingController();
   final TextEditingController _nikKkController = TextEditingController();
@@ -222,7 +220,7 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
 
   Future<void> _pilihFoto(bool isKtp) async {
     final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery, imageQuality: 90);
+    final picked = await picker.pickImage(source: ImageSource.gallery, imageQuality: 95);
     if (picked != null) {
       setState(() {
         if (isKtp) {
@@ -234,6 +232,14 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
     }
   }
 
+  String _cleanOcrValue(String text, List<String> stopWords) {
+    String res = text.replaceAll(RegExp(r'[:=]'), ' ').trim();
+    for (var word in stopWords) {
+      res = res.replaceAll(RegExp(word, caseSensitive: false), ' ');
+    }
+    return res.replaceAll(RegExp(r'\s+'), ' ').trim();
+  }
+
   Future<void> _prosesOcr() async {
     if (_ktpFile == null && _kkFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -243,60 +249,101 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
     }
 
     setState(() => _isProcessingOcr = true);
-
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
     try {
       if (_ktpFile != null) {
         final inputImage = InputImage.fromFile(_ktpFile!);
         final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-        final lines = recognizedText.text.split('\n');
+        final List<String> allLines = [];
 
-        for (int i = 0; i < lines.length; i++) {
-          String line = lines[i].trim();
-
-          // Deteksi NIK (16 digit angka)
-          final nikMatch = RegExp(r'\b\d{16}\b').firstMatch(line.replaceAll(' ', ''));
-          if (nikMatch != null && _nikKtpController.text.isEmpty) {
-            _nikKtpController.text = nikMatch.group(0)!;
+        for (var block in recognizedText.blocks) {
+          for (var line in block.lines) {
+            String txt = line.text.trim();
+            if (txt.isNotEmpty) allLines.add(txt);
           }
+        }
 
-          // Deteksi Nama
-          if (line.toLowerCase().contains('nama')) {
-            String nameVal = line.replaceAll(RegExp(r'nama|[:=]', caseSensitive: false), '').trim();
-            if (nameVal.isEmpty && i + 1 < lines.length) {
-              nameVal = lines[i + 1].trim();
+        List<String> alamatParts = [];
+        bool capturingAlamat = false;
+
+        for (int i = 0; i < allLines.length; i++) {
+          String raw = allLines[i];
+          String lower = raw.toLowerCase();
+
+          // 1. NIK
+          if (_nikKtpController.text.isEmpty) {
+            final nikMatch = RegExp(r'\b\d{16}\b').firstMatch(raw.replaceAll(RegExp(r'[^0-9]'), ''));
+            if (nikMatch != null) {
+              _nikKtpController.text = nikMatch.group(0)!;
             }
-            if (nameVal.isNotEmpty) {
-              _namaPemohonController.text = nameVal;
-              if (_namaStnkController.text.isEmpty) _namaStnkController.text = nameVal;
+          }
+
+          // 2. Nama Pemohon
+          if (lower.contains('nama') && !lower.contains('agama') && !lower.contains('status')) {
+            String val = _cleanOcrValue(raw, ['nama', 'provinsi', 'republik', 'indonesia']);
+            if (val.isEmpty && i + 1 < allLines.length && !allLines[i + 1].toLowerCase().contains('tempat') && !allLines[i + 1].toLowerCase().contains('nik')) {
+              val = allLines[i + 1].trim();
+            }
+            if (val.isNotEmpty && !val.toLowerCase().contains('tempat') && !val.toLowerCase().contains('lahir')) {
+              _namaPemohonController.text = val;
+              if (_namaStnkController.text.isEmpty) _namaStnkController.text = val;
             }
           }
 
-          // Deteksi Tempat/Tgl Lahir
-          if (line.toLowerCase().contains('tempat') || line.toLowerCase().contains('lahir')) {
-            String ttlVal = line.replaceAll(RegExp(r'tempat|tgl|lahir|[:=]', caseSensitive: false), '').trim();
-            if (ttlVal.isNotEmpty) _ttlController.text = ttlVal;
+          // 3. TTL
+          if (lower.contains('tempat') || lower.contains('tgl lahir') || lower.contains('lahir')) {
+            String val = _cleanOcrValue(raw, ['tempat', 'tgl', 'lahir', 'tgllahir']);
+            if (val.isEmpty && i + 1 < allLines.length && !allLines[i + 1].toLowerCase().contains('jenis') && !allLines[i + 1].toLowerCase().contains('alamat')) {
+              val = allLines[i + 1].trim();
+            }
+            if (val.isNotEmpty && !val.toLowerCase().contains('jenis') && !val.toLowerCase().contains('kelamin')) {
+              _ttlController.text = val;
+            }
           }
 
-          // Deteksi Alamat
-          if (line.toLowerCase().contains('alamat')) {
-            String almVal = line.replaceAll(RegExp(r'alamat|[:=]', caseSensitive: false), '').trim();
-            if (almVal.isEmpty && i + 1 < lines.length) {
-              almVal = lines[i + 1].trim();
+          // 4. Pekerjaan
+          if (lower.contains('pekerjaan')) {
+            String val = _cleanOcrValue(raw, ['pekerjaan']);
+            if (val.isEmpty && i + 1 < allLines.length) val = allLines[i + 1].trim();
+            if (val.isNotEmpty && !val.toLowerCase().contains('kewarganegaraan')) {
+              _pekerjaanController.text = val;
             }
-            if (almVal.isNotEmpty) _alamatController.text = almVal;
           }
+
+          // 5. Alamat Lengkap
+          if (lower.contains('alamat')) {
+            capturingAlamat = true;
+            String val = _cleanOcrValue(raw, ['alamat']);
+            if (val.isNotEmpty) alamatParts.add(val);
+          } else if (capturingAlamat) {
+            if (lower.contains('rt/rw') || lower.contains('rt') || lower.contains('rw') || lower.contains('kel') || lower.contains('desa') || lower.contains('kecamatan')) {
+              alamatParts.add(_cleanOcrValue(raw, []));
+            } else if (lower.contains('agama') || lower.contains('status') || lower.contains('pekerjaan') || lower.contains('kawin')) {
+              capturingAlamat = false;
+            }
+          }
+        }
+
+        if (alamatParts.isNotEmpty) {
+          _alamatController.text = alamatParts.join(', ');
         }
       }
 
+      // OCR Kartu Keluarga
       if (_kkFile != null) {
         final inputImage = InputImage.fromFile(_kkFile!);
         final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-        final lines = recognizedText.text.split('\n');
+        final List<String> kkLines = [];
 
-        for (String line in lines) {
-          final nikMatch = RegExp(r'\b\d{16}\b').firstMatch(line.replaceAll(' ', ''));
+        for (var block in recognizedText.blocks) {
+          for (var line in block.lines) {
+            kkLines.add(line.text.trim());
+          }
+        }
+
+        for (String line in kkLines) {
+          final nikMatch = RegExp(r'\b\d{16}\b').firstMatch(line.replaceAll(RegExp(r'[^0-9]'), ''));
           if (nikMatch != null && _nikKkController.text.isEmpty) {
             _nikKkController.text = nikMatch.group(0)!;
             break;
@@ -306,7 +353,7 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✅ Data KTP / KK berhasil diekstrak!'), backgroundColor: Colors.green),
+          const SnackBar(content: Text('✅ Data KTP & KK berhasil dipindai rapi!'), backgroundColor: Colors.green),
         );
       }
     } catch (e) {
@@ -377,7 +424,6 @@ HASIL : ${_hasilController.text}```''';
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // BAGIAN 1: OCR KTP & KK
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
@@ -391,7 +437,7 @@ HASIL : ${_hasilController.text}```''';
                 children: [
                   const Text('1. Dokumen Konsumen (OCR KTP & KK)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 4),
-                  const Text('Unggah foto KTP dan KK untuk auto-fill data secara otomatis.', style: TextStyle(color: Colors.black54, fontSize: 13)),
+                  const Text('Unggah foto KTP dan KK untuk auto-fill data secara presisi.', style: TextStyle(color: Colors.black54, fontSize: 13)),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -471,8 +517,6 @@ HASIL : ${_hasilController.text}```''';
               ),
             ),
             const SizedBox(height: 20),
-
-            // BAGIAN 2: SIMULASI BROSUR
             const Text('2. Pilih Unit Motor (Brosur)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 8),
             Container(
@@ -569,8 +613,6 @@ HASIL : ${_hasilController.text}```''';
             ),
             const SizedBox(height: 24),
             const Divider(thickness: 2),
-
-            // BAGIAN 3: HASIL FORM TIM KLEWANG
             const SizedBox(height: 8),
             const Text('3. Format Data Konsumen (TIM KLEWANG)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
             const SizedBox(height: 12),
@@ -582,7 +624,7 @@ HASIL : ${_hasilController.text}```''';
             const SizedBox(height: 10),
             TextField(controller: _ttlController, decoration: const InputDecoration(labelText: 'TTL (Tempat, Tanggal Lahir)', border: OutlineInputBorder())),
             const SizedBox(height: 10),
-            TextField(controller: _ibuKandungController, decoration: const InputDecoration(labelText: 'Nama Ibu Kandung', border: OutlineInputBorder())),
+            TextField(controller: _ibuKandungController, decoration: const InputDecoration(labelText: 'Nama Ibu Kandung (Isi Manual / dari KK)', border: OutlineInputBorder())),
             const SizedBox(height: 10),
             TextField(controller: _alamatController, maxLines: 2, decoration: const InputDecoration(labelText: 'Alamat Lengkap', border: OutlineInputBorder())),
             const SizedBox(height: 10),
