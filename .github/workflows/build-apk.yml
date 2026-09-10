@@ -32,12 +32,13 @@ jobs:
           flutter create --org com.hondasales.app --project-name honda_sales_app honda_sales_app
           cd honda_sales_app
 
-          # Pasang plugin OCR dan Image Picker
+          # Pasang plugin pendukung OCR dan Image Picker
           flutter pub add intl image_picker google_mlkit_text_recognition
           cp /tmp/my_source/main.dart lib/main.dart
 
-          # Atur minSdkVersion minimal 21 untuk ML Kit
-          sed -i 's/minSdkVersion.*/minSdkVersion 21/g' android/app/build.gradle
+          # Konfigurasi minSdkVersion dan compileSdkVersion agar kompatibel dengan ML Kit
+          sed -i 's/minSdkVersion = flutter.minSdkVersion/minSdkVersion = 21/g' android/app/build.gradle
+          sed -i 's/minSdkVersion [0-9]*/minSdkVersion 21/g' android/app/build.gradle
 
           chmod +x android/gradlew
           flutter build apk --debug --no-tree-shake-icons
