@@ -20,28 +20,29 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'
           channel: 'stable'
 
       - name: Create Clean Project & Compile APK
         run: |
-          # 1. Simpan kode main.dart buatan kamu
+          # 1. Simpan kode dan konfigurasi dependensi
           mkdir -p /tmp/backup_code
           cp -r lib /tmp/backup_code/
+          cp pubspec.yaml /tmp/backup_code/
           
-          # 2. Buat proyek Flutter baru dari nol yang fresh
+          # 2. Buat proyek Flutter baru yang lengkap
           cd /tmp
           flutter create --org com.hondasales.app --project-name honda_sales_app my_app
           
-          # 3. Masukkan kode kamu ke proyek baru
+          # 3. Masukkan kode dan dependensi ke proyek baru
           cp -r /tmp/backup_code/lib/* /tmp/my_app/lib/
+          cp /tmp/backup_code/pubspec.yaml /tmp/my_app/pubspec.yaml
           
-          # 4. Pindah ke folder app dan build APK
+          # 4. Ambil semua library dan compile APK
           cd /tmp/my_app
           flutter pub get
           flutter build apk --debug
 
-          # 5. Salin APK hasil jadi ke workspace repo agar bisa di-upload
+          # 5. Salin APK hasil build ke workspace
           mkdir -p $GITHUB_WORKSPACE/output_apk
           cp build/app/outputs/flutter-apk/app-debug.apk $GITHUB_WORKSPACE/output_apk/Honda-Sales.apk
 
