@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kredit Motor Honda - TIM KLEWANG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-8 px-4">
+    <div class="max-w-2xl mx-auto bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8">
+        
+        <!-- Header & Branding Tim Klewang -->
+        <div class="text-center mb-8 pb-6 border-b border-slate-700">
+            <div class="inline-flex items-center justify-center p-3 bg-red-600/20 border border-red-500/40 rounded-full mb-3">
+                <span class="text-3xl">⚔️</span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-black text-red-500 tracking-wide uppercase">TIM KLEWANG</h1>
+            <p class="text-xs md:text-sm font-semibold text-slate-400 tracking-wider uppercase mt-1">MPM MOTOR HONDA • BATAM</p>
+            <p class="text-xs text-slate-400 mt-2 bg-slate-900/60 inline-block px-3 py-1 rounded-full border border-slate-700">Kalkulator Simulasi Kredit & Promo Resmi</p>
+        </div>
+
+        <!-- Form Pemilihan -->
+        <div class="space-y-5">
+            <!-- Pilihan Motor -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Pilih Tipe Motor</label>
+                <select id="motorSelect" class="w-full bg-slate-900 border border-slate-700 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl px-4 py-3 text-sm text-slate-100 font-medium outline-none transition"></select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Pilihan DP Normal -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">DP Normal Brosur</label>
+                    <select id="dpSelect" class="w-full bg-slate-900 border border-slate-700 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl px-4 py-3 text-sm text-slate-100 font-medium outline-none transition"></select>
+                </div>
+
+                <!-- Pilihan Tenor -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Tenor Angsuran</label>
+                    <select id="tenorSelect" class="w-full bg-slate-900 border border-slate-700 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl px-4 py-3 text-sm text-slate-100 font-medium outline-none transition"></select>
+                </div>
+            </div>
+
+            <!-- Voucher DP -->
+            <div class="p-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl space-y-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold uppercase tracking-wider text-emerald-400">Voucher / Diskon DP</label>
+                    <span id="badgeVoucherResmi" class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md font-semibold">Resmi Brosur</span>
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    <button type="button" class="btn-vdp py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-vdp="auto">Brosur</button>
+                    <button type="button" class="btn-vdp py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-vdp="200000">200 Rb</button>
+                    <button type="button" class="btn-vdp py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-vdp="300000">300 Rb</button>
+                    <button type="button" class="btn-vdp py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-vdp="0">Rp 0</button>
+                </div>
+            </div>
+
+            <!-- Diskon Angsuran Bulanan -->
+            <div class="p-4 bg-red-950/20 border border-red-500/30 rounded-xl space-y-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold uppercase tracking-wider text-red-400">Diskon Angsuran Bulanan</label>
+                    <span class="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-md font-semibold">Potongan Cicilan</span>
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    <button type="button" class="btn-disk py-2 text-xs font-semibold rounded-lg border border-red-500 bg-red-600 text-white transition active" data-disk="0">Rp 0</button>
+                    <button type="button" class="btn-disk py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-disk="20000">20 Rb</button>
+                    <button type="button" class="btn-disk py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-disk="50000">50 Rb</button>
+                    <button type="button" class="btn-disk py-2 text-xs font-semibold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition" data-disk="60000">60 Rb</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu Hasil Simulasi -->
+        <div class="mt-8 bg-slate-900/90 border border-slate-700 rounded-xl p-5 space-y-3.5">
+            <div class="flex justify-between items-center text-xs pb-2 border-b border-slate-800">
+                <span class="text-slate-400 font-medium">Harga OTR</span>
+                <span id="resOtr" class="font-bold text-slate-200">-</span>
+            </div>
+            <div class="flex justify-between items-center text-xs pb-2 border-b border-slate-800">
+                <span class="text-slate-400 font-medium">Voucher Diskon DP</span>
+                <span id="resVoucher" class="font-bold text-emerald-400">-</span>
+            </div>
+            <div class="flex justify-between items-center text-xs pb-2 border-b border-slate-800">
+                <span class="text-slate-400 font-medium">DP Bayar Bersih (Promo)</span>
+                <span id="resDpBayar" class="font-extrabold text-emerald-400 text-sm">-</span>
+            </div>
+            <div class="flex justify-between items-center text-xs pb-2 border-b border-slate-800">
+                <span class="text-slate-400 font-medium">Potongan Tenor</span>
+                <span id="resPotongan" class="font-bold text-cyan-400">-</span>
+            </div>
+            <div class="flex justify-between items-center text-xs pb-2 border-b border-slate-800">
+                <span class="text-slate-400 font-medium">Masa Angsuran</span>
+                <span id="resTenorText" class="font-bold text-slate-200">-</span>
+            </div>
+            <div class="flex justify-between items-center text-xs pb-2 border-b border-slate-800">
+                <span class="text-slate-400 font-medium">Hemat Selama Kredit</span>
+                <span id="resTotalHemat" class="font-bold text-amber-400">-</span>
+            </div>
+            
+            <div class="pt-2 flex flex-col md:flex-row md:justify-between md:items-center">
+                <div>
+                    <span class="text-xs uppercase font-bold text-slate-400">Angsuran per Bulan</span>
+                    <p id="resAngsuranNormalText" class="text-[11px] text-slate-500 line-through hidden">-</p>
+                </div>
+                <div class="text-right mt-1 md:mt-0">
+                    <span id="resAngsuranFinal" class="text-2xl md:text-3xl font-black text-red-500">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel Komparasi Semua Tenor -->
+        <div class="mt-8">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Tabel Komparasi Seluruh Tenor</h3>
+            <div class="overflow-x-auto rounded-xl border border-slate-700">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-900/80 text-slate-400 border-b border-slate-700">
+                            <th class="p-3">Tenor Asli</th>
+                            <th class="p-3">Bayar (x)</th>
+                            <th class="p-3">Potongan</th>
+                            <th class="p-3 text-right">Angsuran / Bln</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-700/60 bg-slate-900/30"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 pt-4 border-t border-slate-800 text-center text-[11px] text-slate-500">
+            © TIM KLEWANG - MPM MOTOR HONDA. Simulasi pembiayaan sewaktu-waktu dapat berubah mengikuti ketentuan leasing.
+        </div>
+    </div>
+
+    <script>
+    const motorData = {
+        "beat_cbs": {
+            name: "NEW BEAT SPORTY CBS PLUS",
+            otr: "Rp 19.098.500",
+            defaultVoucher: 200000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 23, cut: 1 },
+                { months: 30, pay: 29, cut: 1 },
+                { months: 36, pay: 35, cut: 1 },
+                { months: 42, pay: 41, cut: 1 },
+                { months: 48, pay: 47, cut: 1 }
+            ],
+            rates: {
+                1800000: { 12: 1970000, 18: 1460000, 24: 1213000, 30: 1066000, 36: 947000, 42: 874000, 48: 823000 },
+                1900000: { 12: 1959000, 18: 1452000, 24: 1206000, 30: 1061000, 36: 942000, 42: 870000, 48: 819000 },
+                2000000: { 12: 1949000, 18: 1445000, 24: 1200000, 30: 1056000, 36: 937000, 42: 866000, 48: 814000 },
+                2200000: { 12: 1928000, 18: 1430000, 24: 1188000, 30: 1045000, 36: 928000, 42: 857000, 48: 806000 },
+                2500000: { 12: 1897000, 18: 1408000, 24: 1170000, 30: 1029000, 36: 914000, 42: 844000, 48: 794000 },
+                3000000: { 12: 1845000, 18: 1370000, 24: 1139000, 30: 1003000, 36: 891000, 42: 822000, 48: 774000 },
+                4000000: { 12: 1741000, 18: 1296000, 24: 1078000, 30: 949000, 36: 844000, 42: 779000, 48: 733000 },
+                5000000: { 12: 1638000, 18: 1221000, 24: 1016000, 30: 896000, 36: 797000, 42: 736000, 48: 692000 },
+                6000000: { 12: 1534000, 18: 1146000, 24: 955000, 30: 843000, 36: 750000, 42: 692000, 48: 651000 }
+            }
+        },
+        "beat_deluxe_iss": {
+            name: "NEW BEAT SPORTY DELUXE CBS ISS PLUS",
+            otr: "Rp 19.807.500",
+            defaultVoucher: 300000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 23, cut: 1 },
+                { months: 30, pay: 29, cut: 1 },
+                { months: 36, pay: 35, cut: 1 },
+                { months: 42, pay: 41, cut: 1 },
+                { months: 48, pay: 47, cut: 1 }
+            ],
+            rates: {
+                2000000: { 12: 2105000, 18: 1527000, 24: 1262000, 30: 1046000, 36: 950000, 42: 839000, 48: 784000 },
+                2500000: { 12: 2051000, 18: 1489000, 24: 1231000, 30: 1020000, 36: 927000, 42: 819000, 48: 765000 },
+                3000000: { 12: 1997000, 18: 1451000, 24: 1200000, 30: 995000, 36: 904000, 42: 799000, 48: 746000 },
+                4000000: { 12: 1889000, 18: 1375000, 24: 1137000, 30: 944000, 36: 858000, 42: 758000, 48: 709000 },
+                5000000: { 12: 1781000, 18: 1299000, 24: 1075000, 30: 893000, 36: 812000, 42: 718000, 48: 671000 },
+                6000000: { 12: 1673000, 18: 1223000, 24: 1013000, 30: 843000, 36: 767000, 42: 677000, 48: 633000 }
+            }
+        },
+        "beat_smartkey": {
+            name: "NEW BEAT SPORTY DELUXE SMART KEY PLUS",
+            otr: "Rp 20.284.500",
+            defaultVoucher: 200000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 23, cut: 1 },
+                { months: 30, pay: 29, cut: 1 },
+                { months: 36, pay: 35, cut: 1 },
+                { months: 42, pay: 41, cut: 1 },
+                { months: 48, pay: 47, cut: 1 }
+            ],
+            rates: {
+                2100000: { 12: 2150000, 18: 1564000, 24: 1284000, 30: 1065000, 36: 963000, 42: 884000, 48: 829000 },
+                2500000: { 12: 2106000, 18: 1533000, 24: 1259000, 30: 1045000, 36: 945000, 42: 867000, 48: 813000 },
+                3000000: { 12: 2052000, 18: 1495000, 24: 1228000, 30: 1019000, 36: 922000, 42: 846000, 48: 794000 },
+                4000000: { 12: 1944000, 18: 1419000, 24: 1166000, 30: 969000, 36: 877000, 42: 805000, 48: 754000 },
+                5000000: { 12: 1836000, 18: 1342000, 24: 1104000, 30: 918000, 36: 831000, 42: 763000, 48: 715000 },
+                6000000: { 12: 1728000, 18: 1266000, 24: 1042000, 30: 867000, 36: 786000, 42: 721000, 48: 676000 }
+            }
+        },
+        "beat_street": {
+            name: "NEW BEAT STREET (PLUS)",
+            otr: "Rp 19.596.500",
+            defaultVoucher: 100000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 23, cut: 1 },
+                { months: 30, pay: 29, cut: 1 },
+                { months: 36, pay: 35, cut: 1 }
+            ],
+            rates: {
+                1800000: { 12: 2111000, 18: 1532000, 24: 1255000, 30: 1043000, 36: 932000 },
+                2000000: { 12: 2090000, 18: 1517000, 24: 1243000, 30: 1033000, 36: 923000 },
+                2500000: { 12: 2035000, 18: 1479000, 24: 1212000, 30: 1007000, 36: 901000 },
+                3000000: { 12: 1981000, 18: 1441000, 24: 1181000, 30: 982000, 36: 878000 },
+                4000000: { 12: 1873000, 18: 1364000, 24: 1119000, 30: 932000, 36: 833000 },
+                5000000: { 12: 1765000, 18: 1288000, 24: 1057000, 30: 881000, 36: 788000 },
+                6000000: { 12: 1656000, 18: 1212000, 24: 995000, 30: 830000, 36: 743000 }
+            }
+        },
+        "scoopy_fashion": {
+            name: "NEW SCOOPY FASHION",
+            otr: "Rp 22.023.000",
+            defaultVoucher: 200000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 22, cut: 2 },
+                { months: 30, pay: 28, cut: 2 },
+                { months: 36, pay: 34, cut: 2 },
+                { months: 42, pay: 40, cut: 2 },
+                { months: 48, pay: 46, cut: 2 }
+            ],
+            rates: {
+                2200000: { 12: 2253000, 18: 1668000, 24: 1416000, 30: 1182000, 36: 1083000, 42: 1000000, 48: 941000 },
+                2600000: { 12: 2211000, 18: 1638000, 24: 1391000, 30: 1161000, 36: 1064000, 42: 982000, 48: 925000 },
+                3000000: { 12: 2169000, 18: 1608000, 24: 1366000, 30: 1140000, 36: 1045000, 42: 965000, 48: 908000 },
+                4000000: { 12: 2065000, 18: 1532000, 24: 1303000, 30: 1088000, 36: 997000, 42: 921000, 48: 867000 },
+                5000000: { 12: 1961000, 18: 1457000, 24: 1239000, 30: 1036000, 36: 950000, 42: 877000, 48: 826000 },
+                6500000: { 12: 1805000, 18: 1344000, 24: 1145000, 30: 958000, 36: 879000, 42: 811000, 48: 764000 }
+            }
+        },
+        "scoopy_stylish": {
+            name: "NEW SCOOPY STYLISH PLUS",
+            otr: "Rp 23.242.000",
+            defaultVoucher: 200000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 22, cut: 2 },
+                { months: 30, pay: 28, cut: 2 },
+                { months: 36, pay: 34, cut: 2 },
+                { months: 42, pay: 40, cut: 2 },
+                { months: 48, pay: 46, cut: 2 }
+            ],
+            rates: {
+                2300000: { 12: 2372000, 18: 1755000, 24: 1492000, 30: 1244000, 36: 1136000, 42: 1048000, 48: 987000 },
+                2700000: { 12: 2330000, 18: 1725000, 24: 1467000, 30: 1223000, 36: 1117000, 42: 1031000, 48: 970000 },
+                3000000: { 12: 2299000, 18: 1702000, 24: 1448000, 30: 1208000, 36: 1103000, 42: 1018000, 48: 958000 },
+                4000000: { 12: 2195000, 18: 1627000, 24: 1385000, 30: 1155000, 36: 1055000, 42: 974000, 48: 917000 },
+                5000000: { 12: 2090000, 18: 1551000, 24: 1321000, 30: 1103000, 36: 1008000, 42: 930000, 48: 876000 },
+                6500000: { 12: 1934000, 18: 1438000, 24: 1227000, 30: 1025000, 36: 937000, 42: 865000, 48: 814000 }
+            }
+        },
+        "stylo_cbs": {
+            name: "NEW STYLO 160 CBS",
+            otr: "Rp 28.004.000",
+            defaultVoucher: 0,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 24, cut: 0 },
+                { months: 30, pay: 30, cut: 0 },
+                { months: 36, pay: 36, cut: 0 },
+                { months: 42, pay: 42, cut: 0 },
+                { months: 48, pay: 48, cut: 0 }
+            ],
+            rates: {
+                2300000: { 12: 2959000, 18: 2169000, 24: 1741000, 30: 1486000, 36: 1348000, 42: 1266000, 48: 1191000 },
+                3000000: { 12: 2884000, 18: 2115000, 24: 1698000, 30: 1450000, 36: 1316000, 42: 1235000, 48: 1163000 },
+                4000000: { 12: 2777000, 18: 2039000, 24: 1637000, 30: 1398000, 36: 1270000, 42: 1192000, 48: 1122000 },
+                5000000: { 12: 2669000, 18: 1962000, 24: 1576000, 30: 1347000, 36: 1223000, 42: 1148000, 48: 1081000 },
+                6000000: { 12: 2562000, 18: 1885000, 24: 1515000, 30: 1296000, 36: 1177000, 42: 1105000, 48: 1040000 }
+            }
+        },
+        "stylo_abs": {
+            name: "NEW STYLO 160 ABS",
+            otr: "Rp 30.123.000",
+            defaultVoucher: 0,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 24, cut: 0 },
+                { months: 30, pay: 30, cut: 0 },
+                { months: 36, pay: 36, cut: 0 },
+                { months: 42, pay: 42, cut: 0 },
+                { months: 48, pay: 48, cut: 0 }
+            ],
+            rates: {
+                2500000: { 12: 3173000, 18: 2325000, 24: 1862000, 30: 1598000, 36: 1458000, 42: 1354000, 48: 1274000 },
+                3000000: { 12: 3119000, 18: 2286000, 24: 1832000, 30: 1572000, 36: 1435000, 42: 1332000, 48: 1254000 },
+                4000000: { 12: 3012000, 18: 2209000, 24: 1771000, 30: 1520000, 36: 1388000, 42: 1288000, 48: 1213000 },
+                5000000: { 12: 2905000, 18: 2132000, 24: 1710000, 30: 1469000, 36: 1341000, 42: 1245000, 48: 1172000 },
+                6200000: { 12: 2776000, 18: 2040000, 24: 1636000, 30: 1407000, 36: 1285000, 42: 1193000, 48: 1122000 }
+            }
+        },
+        "vario_160_cbs": {
+            name: "NEW VARIO 160 EVO CBS",
+            otr: "Rp 26.822.000",
+            defaultVoucher: 200000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 23, cut: 1 },
+                { months: 30, pay: 29, cut: 1 },
+                { months: 36, pay: 35, cut: 1 },
+                { months: 42, pay: 41, cut: 1 },
+                { months: 48, pay: 47, cut: 1 }
+            ],
+            rates: {
+                2500000: { 12: 2831000, 18: 2041000, 24: 1745000, 30: 1412000, 36: 1296000, 42: 1214000, 48: 1144000 },
+                3000000: { 12: 2777000, 18: 2003000, 24: 1713000, 30: 1386000, 36: 1272000, 42: 1192000, 48: 1123000 },
+                4000000: { 12: 2669000, 18: 1927000, 24: 1648000, 30: 1335000, 36: 1225000, 42: 1148000, 48: 1082000 },
+                5000000: { 12: 2561000, 18: 1851000, 24: 1584000, 30: 1283000, 36: 1179000, 42: 1104000, 48: 1040000 },
+                7000000: { 12: 2345000, 18: 1698000, 24: 1455000, 30: 1181000, 36: 1085000, 42: 1016000, 48: 957000 }
+            }
+        },
+        "vario_160_abs": {
+            name: "NEW VARIO 160 EVO ABS",
+            otr: "Rp 29.024.000",
+            defaultVoucher: 200000,
+            tenors: [
+                { months: 12, pay: 12, cut: 0 },
+                { months: 18, pay: 18, cut: 0 },
+                { months: 24, pay: 23, cut: 1 },
+                { months: 30, pay: 29, cut: 1 },
+                { months: 36, pay: 35, cut: 1 },
+                { months: 42, pay: 41, cut: 1 },
+                { months: 48, pay: 47, cut: 1 }
+            ],
+            rates: {
+                2600000: { 12: 3065000, 18: 2212000, 24: 1866000, 30: 1518000, 36: 1400000, 42: 1294000, 48: 1218000 },
+                3000000: { 12: 3022000, 18: 2181000, 24: 1840000, 30: 1497000, 36: 1382000, 42: 1277000, 48: 1201000 },
+                4000000: { 12: 2914000, 18: 2105000, 24: 1777000, 30: 1446000, 36: 1335000, 42: 1234000, 48: 1161000 },
+                5000000: { 12: 2806000, 18: 2029000, 24: 1713000, 30: 1395000, 36: 1288000, 42: 1190000, 48: 1120000 },
+                7000000: { 12: 2590000, 18: 1876000, 24: 1586000, 30: 1293000, 36: 1194000, 42: 1104000, 48: 1038000 }
+            }
+        }
+    };
+
+    let currentVoucherMode = 'auto';
+    let currentVoucherVal = 0;
+    let currentDiskonAngsuran = 0;
+
+    const motorSelect = document.getElementById("motorSelect");
+    const dpSelect = document.getElementById("dpSelect");
+    const tenorSelect = document.getElementById("tenorSelect");
+
+    function formatRp(val) {
+        return "Rp " + Number(val).toLocaleString("id-ID");
+    }
+
+    function init() {
+        motorSelect.innerHTML = "";
+        Object.keys(motorData).forEach(key => {
+            const opt = document.createElement("option");
+            opt.value = key;
+            opt.textContent = motorData[key].name;
+            motorSelect.appendChild(opt);
+        });
+        updateMotor();
+    }
+
+    function updateMotor() {
+        const motor = motorData[motorSelect.value];
+        
+        // Populate DP
+        dpSelect.innerHTML = "";
+        Object.keys(motor.rates).forEach(dp => {
+            const opt = document.createElement("option");
+            opt.value = dp;
+            opt.textContent = formatRp(dp);
+            dpSelect.appendChild(opt);
+        });
+
+        // Populate Tenor
+        tenorSelect.innerHTML = "";
+        motor.tenors.forEach(t => {
+            const opt = document.createElement("option");
+            opt.value = t.months;
+            opt.textContent = `${t.months} Bulan ${t.cut > 0 ? `(Cukup Bayar ${t.pay}x)` : ''}`;
+            tenorSelect.appendChild(opt);
+        });
+
+        // Update default voucher
+        if (currentVoucherMode === 'auto') {
+            currentVoucherVal = motor.defaultVoucher;
+        }
+
+        render();
+    }
+
+    function render() {
+        const motor = motorData[motorSelect.value];
+        const dpNormal = parseInt(dpSelect.value);
+        const tenorMonths = parseInt(tenorSelect.value);
+        const tenorObj = motor.tenors.find(t => t.months === tenorMonths);
+
+        const vdp = currentVoucherMode === 'auto' ? motor.defaultVoucher : currentVoucherVal;
+        const dpBayar = Math.max(0, dpNormal - vdp);
+
+        const baseAngsuran = motor.rates[dpNormal]?.[tenorMonths] || 0;
+        const finalAngsuran = Math.max(0, baseAngsuran - currentDiskonAngsuran);
+
+        const totalHematAngsuran = currentDiskonAngsuran * tenorObj.pay;
+        const totalSemuaHemat = vdp + totalHematAngsuran;
+
+        // Render Card
+        document.getElementById("resOtr").textContent = motor.otr;
+        document.getElementById("resVoucher").textContent = vdp > 0 ? formatRp(vdp) : "Tidak Ada";
+        document.getElementById("resDpBayar").textContent = formatRp(dpBayar);
+        document.getElementById("resPotongan").textContent = tenorObj.cut > 0 ? `Potongan ${tenorObj.cut} Bulan` : "Tidak Ada";
+        document.getElementById("resTenorText").textContent = `${tenorObj.months} Bulan (Bayar ${tenorObj.pay}x)`;
+        document.getElementById("resTotalHemat").textContent = formatRp(totalSemuaHemat);
+
+        const normText = document.getElementById("resAngsuranNormalText");
+        if (currentDiskonAngsuran > 0) {
+            normText.textContent = formatRp(baseAngsuran);
+            normText.classList.remove("hidden");
+        } else {
+            normText.classList.add("hidden");
+        }
+        document.getElementById("resAngsuranFinal").textContent = formatRp(finalAngsuran);
+
+        // Render Table
+        const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
+        motor.tenors.forEach(t => {
+            const raw = motor.rates[dpNormal]?.[t.months] || 0;
+            const net = Math.max(0, raw - currentDiskonAngsuran);
+            const isSelected = t.months === tenorMonths;
+
+            const tr = document.createElement("tr");
+            if (isSelected) tr.className = "bg-red-500/10 text-red-200 font-bold";
+            tr.innerHTML = `
+                <td class="p-3">${t.months} Bln</td>
+                <td class="p-3">${t.pay}x</td>
+                <td class="p-3">${t.cut > 0 ? `<span class="text-cyan-400">-${t.cut} Bln</span>` : '<span class="text-slate-500">-</span>'}</td>
+                <td class="p-3 text-right">
+                    ${currentDiskonAngsuran > 0 ? `<span class="text-[10px] text-slate-500 line-through mr-1">${formatRp(raw)}</span>` : ''}
+                    <span class="${isSelected ? 'text-red-400' : 'text-slate-100'}">${formatRp(net)}</span>
+                </td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    // Event Listeners
+    motorSelect.addEventListener("change", updateMotor);
+    dpSelect.addEventListener("change", render);
+    tenorSelect.addEventListener("change", render);
+
+    // Voucher DP Buttons
+    document.querySelectorAll(".btn-vdp").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".btn-vdp").forEach(b => {
+                b.classList.remove("border-emerald-500", "bg-emerald-600", "text-white");
+                b.classList.add("border-slate-700", "bg-slate-900", "text-slate-300");
+            });
+            btn.classList.remove("border-slate-700", "bg-slate-900", "text-slate-300");
+            btn.classList.add("border-emerald-500", "bg-emerald-600", "text-white");
+
+            const v = btn.dataset.vdp;
+            if (v === 'auto') {
+                currentVoucherMode = 'auto';
+            } else {
+                currentVoucherMode = 'fixed';
+                currentVoucherVal = parseInt(v);
+            }
+            render();
+        });
+    });
+
+    // Diskon Angsuran Buttons
+    document.querySelectorAll(".btn-disk").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".btn-disk").forEach(b => {
+                b.classList.remove("border-red-500", "bg-red-600", "text-white");
+                b.classList.add("border-slate-700", "bg-slate-900", "text-slate-300");
+            });
+            btn.classList.remove("border-slate-700", "bg-slate-900", "text-slate-300");
+            btn.classList.add("border-red-500", "bg-red-600", "text-white");
+
+            currentDiskonAngsuran = parseInt(btn.dataset.disk);
+            render();
+        });
+    });
+
+    // Inisialisasi awal
+    init();
+    </script>
+</body>
+</html>
