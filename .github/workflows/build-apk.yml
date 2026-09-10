@@ -25,25 +25,20 @@ jobs:
 
       - name: Build APK Clean
         run: |
-          # 1. Simpan file dart kamu
           mkdir -p /tmp/my_source
           cp lib/main.dart /tmp/my_source/
 
-          # 2. Buat proyek baru resmi dengan nama sama
           cd /tmp
           flutter create --org com.hondasales.app --project-name honda_sales_app honda_sales_app
           cd honda_sales_app
 
-          # 3. Pasang paket url_launcher dan intl secara otomatis
           flutter pub add url_launcher intl
-
-          # 4. Ganti main.dart dengan kodingan kamu
           cp /tmp/my_source/main.dart lib/main.dart
 
-          # 5. Build debug APK
-          flutter build apk --debug
+          # Fix Gradle permissions & build directly
+          chmod +x android/gradlew
+          flutter build apk --debug --no-tree-shake-icons
 
-          # 6. Salin hasil ke repo
           mkdir -p $GITHUB_WORKSPACE/output_apk
           cp build/app/outputs/flutter-apk/app-debug.apk $GITHUB_WORKSPACE/output_apk/Honda-Sales.apk
 
