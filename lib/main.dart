@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const HondaSalesApp());
@@ -12,7 +15,7 @@ class HondaSalesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Honda Sales Assistant',
+      title: 'TIM KLEWANG - Honda Sales',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE60000)),
@@ -25,13 +28,15 @@ class HondaSalesApp extends StatelessWidget {
 
 class MotorBrosur {
   final String nama;
+  final String tipe;
   final int hargaOtr;
   final int defaultDpKotor;
   final int defaultDiskon;
-  final Map<int, Map<int, int>> skema; // dpGross -> { tenor: angsuran }
+  final Map<int, Map<int, int>> skema;
 
   MotorBrosur({
     required this.nama,
+    required this.tipe,
     required this.hargaOtr,
     required this.defaultDpKotor,
     required this.defaultDiskon,
@@ -42,6 +47,7 @@ class MotorBrosur {
 final List<MotorBrosur> daftarBrosur = [
   MotorBrosur(
     nama: 'BeAT Sporty Deluxe CBS ISS Plus',
+    tipe: 'Matic 110cc',
     hargaOtr: 19807500,
     defaultDpKotor: 2000000,
     defaultDiskon: 300000,
@@ -53,6 +59,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'BeAT Street Plus',
+    tipe: 'Matic 110cc',
     hargaOtr: 19596500,
     defaultDpKotor: 1800000,
     defaultDiskon: 100000,
@@ -64,6 +71,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Scoopy Fashion',
+    tipe: 'Matic 110cc Retro',
     hargaOtr: 22023000,
     defaultDpKotor: 2200000,
     defaultDiskon: 200000,
@@ -74,6 +82,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Scoopy Stylish Plus',
+    tipe: 'Matic 110cc Smartkey',
     hargaOtr: 23242000,
     defaultDpKotor: 2300000,
     defaultDiskon: 200000,
@@ -84,6 +93,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Stylo 160 CBS',
+    tipe: 'Matic 160cc Modern Retro',
     hargaOtr: 28004000,
     defaultDpKotor: 2300000,
     defaultDiskon: 0,
@@ -94,6 +104,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Stylo 160 ABS',
+    tipe: 'Matic 160cc ABS',
     hargaOtr: 30123000,
     defaultDpKotor: 2500000,
     defaultDiskon: 0,
@@ -104,6 +115,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Vario 160 EVO CBS Nitro',
+    tipe: 'Matic 160cc Sporty',
     hargaOtr: 27048000,
     defaultDpKotor: 2500000,
     defaultDiskon: 200000,
@@ -114,6 +126,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Vario 160 EVO CBS',
+    tipe: 'Matic 160cc Standard',
     hargaOtr: 26822000,
     defaultDpKotor: 2500000,
     defaultDiskon: 200000,
@@ -124,6 +137,7 @@ final List<MotorBrosur> daftarBrosur = [
   ),
   MotorBrosur(
     nama: 'Vario 160 EVO ABS',
+    tipe: 'Matic 160cc ABS',
     hargaOtr: 29024000,
     defaultDpKotor: 2600000,
     defaultDiskon: 200000,
@@ -145,8 +159,26 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
   late MotorBrosur _selectedMotor;
   late TextEditingController _dpController;
   late TextEditingController _diskonDpController;
-  final TextEditingController _namaKonsumenController = TextEditingController();
-  final TextEditingController _waKonsumenController = TextEditingController();
+
+  // File Foto Dokumen
+  File? _ktpFile;
+  File? _kkFile;
+  bool _isProcessingOcr = false;
+
+  // Controller Form Data Pemohon
+  final TextEditingController _namaPemohonController = TextEditingController();
+  final TextEditingController _nikKtpController = TextEditingController();
+  final TextEditingController _nikKkController = TextEditingController();
+  final TextEditingController _ttlController = TextEditingController();
+  final TextEditingController _ibuKandungController = TextEditingController();
+  final TextEditingController _alamatController = TextEditingController();
+  final TextEditingController _pekerjaanController = TextEditingController();
+  final TextEditingController _rumahController = TextEditingController();
+  final TextEditingController _tlpnController = TextEditingController();
+  final TextEditingController _warnaController = TextEditingController();
+  final TextEditingController _namaStnkController = TextEditingController();
+  final TextEditingController _sumberDataController = TextEditingController(text: 'PAMERAN GRIYA');
+  final TextEditingController _hasilController = TextEditingController();
 
   int _selectedTenor = 35;
   final List<int> _listTenor = [12, 18, 23, 29, 35, 41, 47];
@@ -177,56 +209,167 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
 
   int get angsuranBulanan {
     int dpGross = int.tryParse(_dpController.text.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
-    
-    // Cek apakah ada di tabel brosur persis
     if (_selectedMotor.skema.containsKey(dpGross) && _selectedMotor.skema[dpGross]!.containsKey(_selectedTenor)) {
       return _selectedMotor.skema[dpGross]![_selectedTenor]!;
     }
-
-    // Jika custom DP, gunakan interpolasi rate leasing brosur
     int pokokHutang = _selectedMotor.hargaOtr - dpGross;
     if (pokokHutang <= 0) return 0;
-    double bungaPerBulan = 0.0175; // Rate leasing brosur Honda
+    double bungaPerBulan = 0.0175;
     double totalBunga = pokokHutang * bungaPerBulan * _selectedTenor;
     double totalBayar = pokokHutang + totalBunga;
     return (totalBayar / _selectedTenor).round();
   }
 
-  Future<void> _kirimKeWhatsApp() async {
-    String noHp = _waKonsumenController.text.trim();
-    if (noHp.startsWith('0')) {
-      noHp = '62${noHp.substring(1)}';
+  Future<void> _pilihFoto(bool isKtp) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery, imageQuality: 90);
+    if (picked != null) {
+      setState(() {
+        if (isKtp) {
+          _ktpFile = File(picked.path);
+        } else {
+          _kkFile = File(picked.path);
+        }
+      });
+    }
+  }
+
+  Future<void> _prosesOcr() async {
+    if (_ktpFile == null && _kkFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Pilih foto KTP atau KK terlebih dahulu!'), backgroundColor: Colors.orange),
+      );
+      return;
     }
 
-    String nama = _namaKonsumenController.text.isNotEmpty ? _namaKonsumenController.text : 'Konsumen';
-    String pesan = '''
-*PENAWARAN RESMI MOTOR HONDA* 🛵
-Halo $nama, berikut rincian simulasi kredit brosur resminya:
+    setState(() => _isProcessingOcr = true);
 
-🏍️ *Unit:* ${_selectedMotor.nama}
-🏷️ *Harga OTR:* ${_currencyFormat.format(_selectedMotor.hargaOtr)}
-💰 *DP Normal:* ${_currencyFormat.format(int.tryParse(_dpController.text) ?? 0)}
-🎁 *Diskon DP:* ${_currencyFormat.format(int.tryParse(_diskonDpController.text) ?? 0)}
-👉 *DP Bayar Bersih (Promo):* ${_currencyFormat.format(dpBayar)}
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
-⏱️ *Tenor:* $_selectedTenor Bulan
-💵 *Angsuran:* ${_currencyFormat.format(angsuranBulanan)} / bln
+    try {
+      if (_ktpFile != null) {
+        final inputImage = InputImage.fromFile(_ktpFile!);
+        final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+        final lines = recognizedText.text.split('\n');
 
-_Syarat Pengajuan: KTP & KK saja. Proses cepat & dibantu sampai ACC!_
-Info & Pemesanan langsung hubungi kami ya. Terima kasih!
-''';
+        for (int i = 0; i < lines.length; i++) {
+          String line = lines[i].trim();
 
-    final Uri url = Uri.parse("https://wa.me/$noHp?text=${Uri.encodeComponent(pesan)}");
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
+          // Deteksi NIK (16 digit angka)
+          final nikMatch = RegExp(r'\b\d{16}\b').firstMatch(line.replaceAll(' ', ''));
+          if (nikMatch != null && _nikKtpController.text.isEmpty) {
+            _nikKtpController.text = nikMatch.group(0)!;
+          }
+
+          // Deteksi Nama
+          if (line.toLowerCase().contains('nama')) {
+            String nameVal = line.replaceAll(RegExp(r'nama|[:=]', caseSensitive: false), '').trim();
+            if (nameVal.isEmpty && i + 1 < lines.length) {
+              nameVal = lines[i + 1].trim();
+            }
+            if (nameVal.isNotEmpty) {
+              _namaPemohonController.text = nameVal;
+              if (_namaStnkController.text.isEmpty) _namaStnkController.text = nameVal;
+            }
+          }
+
+          // Deteksi Tempat/Tgl Lahir
+          if (line.toLowerCase().contains('tempat') || line.toLowerCase().contains('lahir')) {
+            String ttlVal = line.replaceAll(RegExp(r'tempat|tgl|lahir|[:=]', caseSensitive: false), '').trim();
+            if (ttlVal.isNotEmpty) _ttlController.text = ttlVal;
+          }
+
+          // Deteksi Alamat
+          if (line.toLowerCase().contains('alamat')) {
+            String almVal = line.replaceAll(RegExp(r'alamat|[:=]', caseSensitive: false), '').trim();
+            if (almVal.isEmpty && i + 1 < lines.length) {
+              almVal = lines[i + 1].trim();
+            }
+            if (almVal.isNotEmpty) _alamatController.text = almVal;
+          }
+        }
+      }
+
+      if (_kkFile != null) {
+        final inputImage = InputImage.fromFile(_kkFile!);
+        final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+        final lines = recognizedText.text.split('\n');
+
+        for (String line in lines) {
+          final nikMatch = RegExp(r'\b\d{16}\b').firstMatch(line.replaceAll(' ', ''));
+          if (nikMatch != null && _nikKkController.text.isEmpty) {
+            _nikKkController.text = nikMatch.group(0)!;
+            break;
+          }
+        }
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('✅ Data KTP / KK berhasil diekstrak!'), backgroundColor: Colors.green),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal membaca OCR: $e'), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      await textRecognizer.close();
+      if (mounted) setState(() => _isProcessingOcr = false);
     }
+  }
+
+  void _bersihkanDokumen() {
+    setState(() {
+      _ktpFile = null;
+      _kkFile = null;
+    });
+  }
+
+  void _salinFormatTimKlewang(BuildContext context) {
+    String teks = '''*TIM KLEWANG*
+
+```Nama Pemohon : ${_namaPemohonController.text}
+NIK KTP : ${_nikKtpController.text}
+NIK KK  : ${_nikKkController.text}
+TTL: ${_ttlController.text}
+Ibu Kandung : ${_ibuKandungController.text}
+Alamat : ${_alamatController.text}
+Pekerjaan : ${_pekerjaanController.text}
+Rumah  : ${_rumahController.text}
+Tlpn: ${_tlpnController.text}
+__________________________
+Motor : ${_selectedMotor.nama}
+Tipe  : ${_selectedMotor.tipe}
+Warna : ${_warnaController.text}
+OTR   : ${_currencyFormat.format(_selectedMotor.hargaOtr)}
+DP    : ${_currencyFormat.format(dpBayar)}
+ANGS  : ${_currencyFormat.format(angsuranBulanan)}
+TENOR : $_selectedTenor
+___________________________________
+Nama Stnk : ${_namaStnkController.text}
+___________________________________
+SUMBER DATA : ``` *${_sumberDataController.text}* ```
+___________________________________
+HASIL : ${_hasilController.text}```''';
+
+    Clipboard.setData(ClipboardData(text: teks));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('✅ Format TIM KLEWANG berhasil disalin!'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Honda Sales Assistant', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('TIM KLEWANG - OCR & Sales', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: const Color(0xFFE60000),
       ),
       body: SingleChildScrollView(
@@ -234,7 +377,103 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Pilih Unit Motor (Sesuai Brosur)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            // BAGIAN 1: OCR KTP & KK
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('1. Dokumen Konsumen (OCR KTP & KK)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  const SizedBox(height: 4),
+                  const Text('Unggah foto KTP dan KK untuk auto-fill data secara otomatis.', style: TextStyle(color: Colors.black54, fontSize: 13)),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => _pilihFoto(true),
+                          icon: const Icon(Icons.badge_outlined),
+                          label: const Text('Foto KTP'),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => _pilihFoto(false),
+                          icon: const Icon(Icons.family_restroom_outlined),
+                          label: const Text('Foto KK'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: _ktpFile != null
+                              ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.file(_ktpFile!, fit: BoxFit.cover))
+                              : const Center(child: Text('Preview KTP', style: TextStyle(color: Colors.grey))),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: _kkFile != null
+                              ? ClipRRect(borderRadius: BorderRadius.circular(8), child: Image.file(_kkFile!, fit: BoxFit.cover))
+                              : const Center(child: Text('Preview KK', style: TextStyle(color: Colors.grey))),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE60000),
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: _isProcessingOcr ? null : _prosesOcr,
+                          icon: _isProcessingOcr
+                              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                              : const Icon(Icons.document_scanner),
+                          label: Text(_isProcessingOcr ? 'Memproses...' : 'Baca Dokumen (OCR)'),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      OutlinedButton(
+                        onPressed: _bersihkanDokumen,
+                        child: const Text('Bersihkan'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // BAGIAN 2: SIMULASI BROSUR
+            const Text('2. Pilih Unit Motor (Brosur)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -258,7 +497,7 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             Row(
               children: [
                 Expanded(
@@ -280,8 +519,8 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            const Text('Pilihan Tenor (Bulan)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const SizedBox(height: 14),
+            const Text('Pilihan Tenor (Bulan)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -298,7 +537,7 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
                 );
               }).toList(),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 14),
             Card(
               color: Colors.red.shade50,
               shape: RoundedRectangleBorder(
@@ -307,21 +546,21 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('DP Bayar Bersih (Promo):', style: TextStyle(fontSize: 15)),
+                        const Text('DP Bersih (Promo):', style: TextStyle(fontSize: 13, color: Colors.grey)),
                         Text(_currencyFormat.format(dpBayar), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    const Divider(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text('Angsuran Per Bulan:', style: TextStyle(fontSize: 15)),
-                        Text(_currencyFormat.format(angsuranBulanan), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFE60000))),
+                        const Text('Angsuran Per Bulan:', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                        Text(_currencyFormat.format(angsuranBulanan), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFE60000))),
                       ],
                     ),
                   ],
@@ -329,29 +568,57 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
               ),
             ),
             const SizedBox(height: 24),
-            const Text('Kirim Penawaran ke Konsumen', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _namaKonsumenController,
-              decoration: const InputDecoration(labelText: 'Nama Calon Konsumen', prefixIcon: Icon(Icons.person), border: OutlineInputBorder()),
-            ),
+            const Divider(thickness: 2),
+
+            // BAGIAN 3: HASIL FORM TIM KLEWANG
+            const SizedBox(height: 8),
+            const Text('3. Format Data Konsumen (TIM KLEWANG)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
             const SizedBox(height: 12),
-            TextField(
-              controller: _waKonsumenController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(labelText: 'No. WhatsApp (08xxx)', prefixIcon: Icon(Icons.phone), border: OutlineInputBorder()),
+            TextField(controller: _namaPemohonController, decoration: const InputDecoration(labelText: 'Nama Pemohon', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _nikKtpController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'NIK KTP', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _nikKkController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'NIK KK', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _ttlController, decoration: const InputDecoration(labelText: 'TTL (Tempat, Tanggal Lahir)', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _ibuKandungController, decoration: const InputDecoration(labelText: 'Nama Ibu Kandung', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _alamatController, maxLines: 2, decoration: const InputDecoration(labelText: 'Alamat Lengkap', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(child: TextField(controller: _pekerjaanController, decoration: const InputDecoration(labelText: 'Pekerjaan', border: OutlineInputBorder()))),
+                const SizedBox(width: 8),
+                Expanded(child: TextField(controller: _rumahController, decoration: const InputDecoration(labelText: 'Status Rumah', border: OutlineInputBorder()))),
+              ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
+            TextField(controller: _tlpnController, keyboardType: TextInputType.phone, decoration: const InputDecoration(labelText: 'No. Telepon / WA', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _warnaController, decoration: const InputDecoration(labelText: 'Warna Motor Pilihan', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _namaStnkController, decoration: const InputDecoration(labelText: 'Nama STNK', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _sumberDataController, decoration: const InputDecoration(labelText: 'Sumber Data', border: OutlineInputBorder())),
+            const SizedBox(height: 10),
+            TextField(controller: _hasilController, decoration: const InputDecoration(labelText: 'Hasil (Status ACC / Catatan)', border: OutlineInputBorder())),
+            const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
-              height: 48,
+              height: 52,
               child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF25D366), foregroundColor: Colors.white),
-                onPressed: _kirimKeWhatsApp,
-                icon: const Icon(Icons.send),
-                label: const Text('Kirim Rincian via WhatsApp', style: TextStyle(fontWeight: FontWeight.bold)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFE60000),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                ),
+                onPressed: () => _salinFormatTimKlewang(context),
+                icon: const Icon(Icons.copy_all),
+                label: const Text('Salin Format TIM KLEWANG', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
