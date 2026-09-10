@@ -35,7 +35,6 @@ final List<MotorHonda> listMotor = [
   MotorHonda(nama: 'Scoopy Prestige / Stylish', hargaOtr: 23230000),
   MotorHonda(nama: 'Genio CBS-ISS', hargaOtr: 19575000),
   MotorHonda(nama: 'Vario 125 CBS-ISS', hargaOtr: 24450000),
-  MotorHonda(nama: 'Vario 160 CBS', hargaOtr: 27350000),
   MotorHonda(nama: 'PCX 160 CBS', hargaOtr: 33300000),
   MotorHonda(nama: 'ADV 160 CBS', hargaOtr: 36200000),
   MotorHonda(nama: 'Stylo 160 CBS', hargaOtr: 28045000),
@@ -50,15 +49,21 @@ class SimulasiKreditPage extends StatefulWidget {
 }
 
 class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
-  MotorHonda _selectedMotor = listMotor[0];
-  final _dpController = TextEditingController(text: '2000000');
-  final _diskonDpController = TextEditingController(text: '500000');
-  final _namaKonsumenController = TextEditingController();
-  final _waKonsumenController = TextEditingController();
+  late MotorHonda _selectedMotor;
+  final TextEditingController _dpController = TextEditingController(text: '2000000');
+  final TextEditingController _diskonDpController = TextEditingController(text: '500000');
+  final TextEditingController _namaKonsumenController = TextEditingController();
+  final TextEditingController _waKonsumenController = TextEditingController();
 
   int _selectedTenor = 35;
   final List<int> _listTenor = [11, 17, 23, 29, 35];
-  final currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  final NumberFormat _currencyFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedMotor = listMotor[0];
+  }
 
   int get dpBayar {
     int dpGross = int.tryParse(_dpController.text.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
@@ -75,11 +80,10 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
     double bungaPerBulan = 0.02; // Bunga leasing ~2% flat
     double totalBunga = pokokHutang * bungaPerBulan * _selectedTenor;
     double totalBayar = pokokHutang + totalBunga;
-
     return (totalBayar / _selectedTenor).round();
   }
 
-  void _kirimKeWhatsApp() async {
+  Future<void> _kirimKeWhatsApp() async {
     String noHp = _waKonsumenController.text.trim();
     if (noHp.startsWith('0')) {
       noHp = '62${noHp.substring(1)}';
@@ -91,13 +95,13 @@ class _SimulasiKreditPageState extends State<SimulasiKreditPage> {
 Halo $nama, berikut rincian simulasi kreditnya:
 
 🏍️ *Unit:* ${_selectedMotor.nama}
-🏷️ *Harga OTR:* ${currencyFormat.format(_selectedMotor.hargaOtr)}
-💰 *DP Normal:* ${currencyFormat.format(int.tryParse(_dpController.text) ?? 0)}
-🎁 *Diskon DP:* ${currencyFormat.format(int.tryParse(_diskonDpController.text) ?? 0)}
-👉 *DP Bayar Bersih:* *${currencyFormat.format(dpBayar)}*
+🏷️ *Harga OTR:* ${_currencyFormat.format(_selectedMotor.hargaOtr)}
+💰 *DP Normal:* ${_currencyFormat.format(int.tryParse(_dpController.text) ?? 0)}
+🎁 *Diskon DP:* ${_currencyFormat.format(int.tryParse(_diskonDpController.text) ?? 0)}
+👉 *DP Bayar Bersih:* ${_currencyFormat.format(dpBayar)}
 
 ⏱️ *Tenor:* $_selectedTenor Bulan
-💵 *Angsuran:* *${currencyFormat.format(angsuranBulanan)} / bln*
+💵 *Angsuran:* ${_currencyFormat.format(angsuranBulanan)} / bln
 
 _Syarat Pengajuan: KTP & KK saja. Proses cepat & dibantu sampai ACC!_
 Info & Pemesanan langsung hubungi kami ya. Terima kasih!
@@ -136,9 +140,9 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
                   items: listMotor.map((motor) {
                     return DropdownMenuItem(
                       value: motor,
-                      child: Text('${motor.nama} - ${currencyFormat.format(motor.hargaOtr)}'),
+                      child: Text('${motor.nama} - ${_currencyFormat.format(motor.hargaOtr)}'),
                     );
-                  }).toList>,
+                  }).toList(),
                   onChanged: (val) {
                     if (val != null) setState(() => _selectedMotor = val);
                   },
@@ -200,7 +204,7 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('DP Bayar Bersih:', style: TextStyle(fontSize: 15)),
-                        Text(currencyFormat.format(dpBayar), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(_currencyFormat.format(dpBayar), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const Divider(height: 24),
@@ -208,7 +212,7 @@ Info & Pemesanan langsung hubungi kami ya. Terima kasih!
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Angsuran Per Bulan:', style: TextStyle(fontSize: 15)),
-                        Text(currencyFormat.format(angsuranBulanan), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFE60000))),
+                        Text(_currencyFormat.format(angsuranBulanan), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFFE60000))),
                       ],
                     ),
                   ],
