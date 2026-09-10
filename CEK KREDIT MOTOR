@@ -1,0 +1,1001 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kredit Motor Honda - TIM KLEWANG MPM MOTOR</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .btn-discount.active {
+            background-color: #dc2626;
+            color: #ffffff;
+            border-color: #ef4444;
+            box-shadow: 0 0 16px rgba(220, 38, 38, 0.45);
+        }
+
+        .btn-voucher.active {
+            background-color: #059669;
+            color: #ffffff;
+            border-color: #10b981;
+            box-shadow: 0 0 16px rgba(5, 150, 105, 0.45);
+        }
+
+        .metallic-glow {
+            filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.35));
+        }
+
+        .custom-card {
+            background: linear-gradient(145deg, #131b2e 0%, #0d1322 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen antialiased flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+<header class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-red-800/40 shadow-2xl sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        
+        <!-- Logo & Branding Section -->
+        <div class="flex items-center space-x-3.5">
+            <!-- Custom Vector Emblem TIM KLEWANG MPM MOTOR -->
+            <div class="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 metallic-glow">
+                <svg viewBox="0 0 200 200" class="w-full h-full">
+                    <defs>
+                        <!-- Chrome Gradient -->
+                        <linearGradient id="chromeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f8fafc"/>
+                            <stop offset="25%" stop-color="#94a3b8"/>
+                            <stop offset="50%" stop-color="#ffffff"/>
+                            <stop offset="75%" stop-color="#475569"/>
+                            <stop offset="100%" stop-color="#cbd5e1"/>
+                        </linearGradient>
+                        <radialGradient id="darkGear" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#1e293b"/>
+                            <stop offset="75%" stop-color="#0f172a"/>
+                            <stop offset="100%" stop-color="#020617"/>
+                        </radialGradient>
+                        <linearGradient id="redRibbon" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7f1d1d"/>
+                            <stop offset="35%" stop-color="#dc2626"/>
+                            <stop offset="70%" stop-color="#ef4444"/>
+                            <stop offset="100%" stop-color="#991b1b"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Outer Gear & Cog Ring -->
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="url(#chromeGrad)" stroke-width="4" stroke-dasharray="8 4"/>
+                    <circle cx="100" cy="100" r="88" fill="url(#darkGear)" stroke="#cbd5e1" stroke-width="2.5"/>
+                    <circle cx="100" cy="100" r="76" fill="#0f172a" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 2"/>
+
+                    <!-- Wing Blades Right -->
+                    <path d="M 95 62 C 132 38, 168 43, 178 58 C 162 68, 136 73, 105 80 Z" fill="url(#chromeGrad)" stroke="#334155" stroke-width="1.2"/>
+                    <path d="M 90 77 C 132 57, 172 62, 186 79 C 166 89, 136 94, 100 99 Z" fill="url(#chromeGrad)" stroke="#334155" stroke-width="1.2"/>
+                    <path d="M 85 95 C 127 77, 167 87, 180 105 C 157 112, 127 115, 90 117 Z" fill="url(#chromeGrad)" stroke="#334155" stroke-width="1.2"/>
+
+                    <!-- Klewang Sword / Blade Left & Center -->
+                    <path d="M 28 145 Q 60 92, 95 58 L 105 72 Q 74 112, 44 154 Z" fill="url(#chromeGrad)" stroke="#475569" stroke-width="1.8"/>
+                    <!-- Sword Handle & Guard -->
+                    <ellipse cx="38" cy="148" rx="7" ry="13" fill="#991b1b" stroke="#f8fafc" stroke-width="1.2" transform="rotate(-45 38 148)"/>
+                    <path d="M 30 156 L 22 164" stroke="#f8fafc" stroke-width="3.5" stroke-linecap="round"/>
+
+                    <!-- Red Banner Ribbon for TIM KLEWANG -->
+                    <polygon points="22,125 178,117 186,145 14,153" fill="url(#redRibbon)" stroke="#ffffff" stroke-width="1.8" filter="drop-shadow(0 2px 5px rgba(0,0,0,0.8))"/>
+
+                    <!-- Honda mini title on ribbon -->
+                    <text x="100" y="123" text-anchor="middle" fill="#f8fafc" font-size="9" font-weight="900" letter-spacing="1">HONDA</text>
+                    
+                    <!-- TIM KLEWANG Bold Text -->
+                    <text x="100" y="143" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="900" font-style="italic" letter-spacing="0.5" stroke="#450a0a" stroke-width="0.6">TIM KLEWANG</text>
+
+                    <!-- MPM Motor Subtitle -->
+                    <rect x="68" y="157" width="64" height="15" rx="3.5" fill="#000000" opacity="0.85"/>
+                    <text x="100" y="168" text-anchor="middle" fill="#ef4444" font-size="8.5" font-weight="900" letter-spacing="1.2">MPM MOTOR</text>
+                </svg>
+            </div>
+
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="bg-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded tracking-widest uppercase">HONDA</span>
+                    <h1 class="text-base sm:text-xl font-black text-white tracking-tight">TIM KLEWANG</h1>
+                </div>
+                <p class="text-xs text-red-300 font-medium">MPM Motor Batam • Simulasi & Kalkulator Kredit Resmi</p>
+            </div>
+        </div>
+
+        <!-- Tagline & Status Badge -->
+        <div class="flex items-center gap-2.5 text-xs bg-slate-900/90 text-slate-300 px-3.5 py-1.5 rounded-full border border-red-500/30">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-white font-semibold">Price List Resmi Terupdate</span>
+        </div>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-6 sm:py-8 space-y-6 flex-grow">
+
+    <!-- Feature Highlights Ribbon -->
+    <section class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 text-xs">
+        <div class="glass-panel p-3 rounded-xl border border-emerald-500/20 flex flex-col items-center text-center">
+            <span class="text-xl mb-1">🎟️</span>
+            <span class="font-extrabold text-emerald-400">Voucher / Diskon DP</span>
+            <span class="text-[11px] text-slate-400 mt-0.5">Potongan langsung uang muka</span>
+        </div>
+        <div class="glass-panel p-3 rounded-xl border border-red-500/20 flex flex-col items-center text-center">
+            <span class="text-xl mb-1">💸</span>
+            <span class="font-extrabold text-red-400">Diskon Angsuran</span>
+            <span class="text-[11px] text-slate-400 mt-0.5">-20rb, 50rb, 60rb/bln</span>
+        </div>
+        <div class="glass-panel p-3 rounded-xl border border-blue-500/20 flex flex-col items-center text-center">
+            <span class="text-xl mb-1">✂️</span>
+            <span class="font-extrabold text-blue-400">Potongan Tenor</span>
+            <span class="text-[11px] text-slate-400 mt-0.5">Gratis 1 - 2 bulan cicilan</span>
+        </div>
+        <div class="glass-panel p-3 rounded-xl border border-amber-500/20 flex flex-col items-center text-center">
+            <span class="text-xl mb-1">💰</span>
+            <span class="font-extrabold text-amber-400">Total Hemat</span>
+            <span class="text-[11px] text-slate-400 mt-0.5">Akumulasi voucher + angsuran</span>
+        </div>
+        <div class="col-span-2 sm:col-span-4 lg:col-span-1 glass-panel p-3 rounded-xl border border-slate-700/50 flex flex-col items-center text-center">
+            <span class="text-xl mb-1">📋</span>
+            <span class="font-extrabold text-white">Salin Simulasi</span>
+            <span class="text-[11px] text-slate-400 mt-0.5">Format teks siap kirim</span>
+        </div>
+    </section>
+
+    <!-- Main Grid Simulator Form & Result -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <div class="lg:col-span-6 space-y-5">
+            
+            <!-- 1. Pilihan Motor, DP & Tenor -->
+            <div class="custom-card rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+                <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                            <span class="text-red-500">🛵</span> 1. Pilih Model Motor & DP
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Sesuai Price List Resmi Honda MPM Batam</p>
+                    </div>
+                </div>
+
+                <!-- Input Model Motor -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5" for="motorSelect">
+                        Model Motor Honda
+                    </label>
+                    <div class="relative">
+                        <select id="motorSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white font-semibold text-sm focus:ring-2 focus:ring-red-500 focus:outline-none transition-all cursor-pointer"></select>
+                    </div>
+                </div>
+
+                <!-- Input DP Normal -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider" for="dpSelect">
+                            Uang Muka (DP Normal Brosur)
+                        </label>
+                        <span id="dpBrosurBadge" class="text-[11px] font-semibold text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
+                            Sebelum Voucher
+                        </span>
+                    </div>
+                    <select id="dpSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white font-semibold text-sm focus:ring-2 focus:ring-red-500 focus:outline-none transition-all cursor-pointer"></select>
+                </div>
+
+                <!-- Input Tenor -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5" for="tenorSelect">
+                        Jangka Waktu Cicilan (Tenor)
+                    </label>
+                    <select id="tenorSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white font-semibold text-sm focus:ring-2 focus:ring-red-500 focus:outline-none transition-all cursor-pointer"></select>
+                </div>
+            </div>
+
+            <!-- 2. FITUR VOUCHER / DISKON DP -->
+            <div class="custom-card bg-gradient-to-br from-emerald-950/30 to-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-emerald-600/30 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-800/30 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="p-1.5 bg-emerald-600/90 text-white rounded-lg text-sm">🎟️</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-extrabold text-white">2. Voucher & Diskon DP</h3>
+                            <p class="text-[11px] text-emerald-400">Potong langsung dari DP Normal Brosur</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span id="activeVoucherTag" class="text-xs font-black text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-3 py-1 rounded-full">
+                            Voucher: Rp 0
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Status Voucher Brosur Resmi -->
+                <div class="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-emerald-500/20 text-xs">
+                    <span class="text-slate-300">Voucher Bawaan Brosur:</span>
+                    <span id="defaultVoucherLabel" class="font-extrabold text-emerald-400 text-sm">Rp 0</span>
+                </div>
+
+                <!-- Preset Voucher Buttons -->
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-2">
+                        Pilih Nominal Voucher DP:
+                    </label>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 text-xs">
+                        <button type="button" data-voucher="auto" class="btn-voucher active py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            Sesuai Brosur
+                        </button>
+                        <button type="button" data-voucher="0" class="btn-voucher py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            Tanpa Voucher
+                        </button>
+                        <button type="button" data-voucher="100000" class="btn-voucher py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            100 Ribu
+                        </button>
+                        <button type="button" data-voucher="200000" class="btn-voucher py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            200 Ribu
+                        </button>
+                        <button type="button" data-voucher="300000" class="btn-voucher py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            300 Ribu
+                        </button>
+                        <button type="button" data-voucher="500000" class="btn-voucher py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            500 Ribu
+                        </button>
+                        <button type="button" data-voucher="1000000" class="btn-voucher py-2 px-2 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-emerald-500 transition-all text-center">
+                            1 Juta
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Custom Voucher Input -->
+                <div class="pt-1 flex items-center gap-2">
+                    <span class="text-[11px] text-slate-300 font-semibold whitespace-nowrap">Voucher Custom:</span>
+                    <div class="relative flex-1">
+                        <span class="absolute left-3 top-2 text-xs text-emerald-400 font-bold">Rp</span>
+                        <input type="number" id="customVoucherInput" min="0" step="50000" placeholder="Ketik voucher custom..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-9 pr-3 py-1.5 text-xs font-medium text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. FITUR DISKON ANGSURAN BULANAN -->
+            <div class="custom-card bg-gradient-to-br from-red-950/30 to-slate-900/90 rounded-2xl p-5 sm:p-6 shadow-xl border border-red-600/30 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-red-800/30 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="p-1.5 bg-red-600/90 text-white rounded-lg text-sm">💸</span>
+                        <div>
+                            <h3 class="text-sm sm:text-base font-extrabold text-white">3. Diskon Angsuran Bulanan</h3>
+                            <p class="text-[11px] text-red-400">Potongan cicilan bersih tiap bulan</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span id="activeDiscountTag" class="text-xs font-black text-red-300 bg-red-950/80 border border-red-500/40 px-3 py-1 rounded-full">
+                            Diskon: Rp 0 / bln
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Preset Diskon Angsuran Buttons -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <button type="button" data-discount="0" class="btn-discount active py-2 px-2.5 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-red-500 transition-all text-center">
+                        Tanpa Diskon
+                    </button>
+                    <button type="button" data-discount="20000" class="btn-discount py-2 px-2.5 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-red-500 transition-all text-center">
+                        - 20 Ribu / bln
+                    </button>
+                    <button type="button" data-discount="50000" class="btn-discount py-2 px-2.5 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-red-500 transition-all text-center">
+                        - 50 Ribu / bln
+                    </button>
+                    <button type="button" data-discount="60000" class="btn-discount py-2 px-2.5 rounded-lg font-bold border border-slate-700 bg-slate-900 text-slate-200 hover:border-red-500 transition-all text-center">
+                        - 60 Ribu / bln
+                    </button>
+                </div>
+
+                <!-- Custom Diskon Angsuran -->
+                <div class="pt-1 flex items-center gap-2">
+                    <span class="text-[11px] text-slate-300 font-semibold whitespace-nowrap">Diskon Custom:</span>
+                    <div class="relative flex-1">
+                        <span class="absolute left-3 top-2 text-xs text-red-400 font-bold">Rp</span>
+                        <input type="number" id="customDiscountInput" min="0" step="5000" placeholder="Ketik nominal diskon..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-9 pr-3 py-1.5 text-xs font-medium text-white focus:ring-2 focus:ring-red-500 focus:outline-none">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-6 space-y-5">
+            
+            <!-- KARTU HASIL UTAMA (Rincian Bersih) -->
+            <div class="custom-card bg-gradient-to-br from-slate-900 via-slate-900 to-black rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xl border-2 border-red-600/40">
+                <div class="flex justify-between items-start pb-3 border-b border-slate-800">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-red-400 font-black flex items-center gap-1">
+                            <i class="fa-solid fa-certificate"></i> Rincian Kredit Final
+                        </span>
+                        <h4 id="resMotorName" class="text-base sm:text-lg font-black text-white mt-0.5">-</h4>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[11px] text-slate-400 block">Harga OTR</span>
+                        <span id="resOtr" class="text-sm font-bold text-white">-</span>
+                    </div>
+                </div>
+
+                <!-- Breakdown DP -->
+                <div class="bg-slate-900/90 rounded-xl p-3.5 border border-slate-800 space-y-2 text-xs">
+                    <div class="flex justify-between items-center text-slate-300">
+                        <span>DP Normal Brosur:</span>
+                        <span id="resDpNormal" class="font-bold text-white">-</span>
+                    </div>
+                    <div class="flex justify-between items-center text-emerald-400">
+                        <span class="flex items-center gap-1">
+                            <span>🎟️</span> Total Voucher DP:
+                        </span>
+                        <span id="resVoucherApplied" class="font-black bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/40">-</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-sm font-black">
+                        <span class="text-white">DP Bayar Bersih (Promo):</span>
+                        <span id="resDpBayar" class="text-emerald-400 text-base font-extrabold">-</span>
+                    </div>
+                </div>
+
+                <!-- Breakdown Tenor & Potongan -->
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <span class="text-[11px] text-slate-400 block">Potongan Tenor</span>
+                        <span id="resPotongan" class="font-bold text-blue-400 text-sm">-</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                        <span class="text-[11px] text-slate-400 block">Cukup Bayar</span>
+                        <span id="resTenorText" class="font-bold text-amber-400 text-sm">-</span>
+                    </div>
+                </div>
+
+                <!-- Angsuran Bersih Per Bulan -->
+                <div class="bg-gradient-to-r from-red-950/80 via-red-900/50 to-slate-950 p-4 rounded-xl border border-red-500/50 space-y-1.5">
+                    <div class="flex justify-between items-baseline">
+                        <div>
+                            <span class="block text-xs font-extrabold text-red-200 uppercase tracking-wider">Angsuran Bersih / Bulan</span>
+                            <span id="resOriginalBadge" class="text-[11px] text-slate-400 hidden">
+                                Normal: <del id="resAngsuranNormal" class="text-slate-400">-</del>
+                            </span>
+                        </div>
+                        <div class="text-right">
+                            <span id="resAngsuranFinal" class="text-2xl sm:text-3xl font-black text-red-400 tracking-tight">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Penghematan -->
+                    <div id="totalSavingsBanner" class="mt-2 pt-2 border-t border-red-800/60 flex justify-between items-center text-xs text-emerald-300 font-bold">
+                        <span>Total Hemat (Voucher + Diskon):</span>
+                        <span id="resTotalHematSemua" class="bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/40 text-emerald-400 font-extrabold">-</span>
+                    </div>
+                </div>
+
+                <!-- Bonus Bawaan Resmi -->
+                <div class="bg-amber-950/20 border border-amber-500/30 rounded-xl p-3 flex items-start space-x-2 text-xs text-amber-200">
+                    <span class="text-base">🎁</span>
+                    <div>
+                        <span class="font-bold block text-amber-300">Bonus & Aksesoris Gratis:</span>
+                        <span id="resBonusText" class="text-slate-300 leading-snug">-</span>
+                    </div>
+                </div>
+
+                <!-- Action Button: Copy Summary (NO WHATSAPP BUTTON) -->
+                <div>
+                    <button type="button" id="copySummaryBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl border border-slate-700 flex items-center justify-center gap-2 text-xs transition-all active:scale-95 shadow-md">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Salin Rincian Simulasi</span>
+                    </button>
+                    <p id="copyStatusText" class="text-center text-[11px] text-emerald-400 mt-1.5 hidden font-semibold">
+                        ✓ Rincian simulasi berhasil disalin ke clipboard!
+                    </p>
+                </div>
+            </div>
+
+            <!-- TABEL KOMPARASI SEMUA TENOR -->
+            <div class="custom-card rounded-2xl p-5 sm:p-6 shadow-xl space-y-3.5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-3">
+                    <div>
+                        <h4 class="text-sm sm:text-base font-extrabold text-white flex items-center gap-1.5">
+                            <span class="text-red-500">📊</span> Tabel Komparasi Seluruh Tenor
+                        </h4>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            DP Bayar <strong id="tableDpLabel" class="text-emerald-400">Rp 0</strong> • Diskon <strong id="tableDiscLabel" class="text-red-400">Rp 0</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-slate-900 text-slate-300 font-bold border-b border-slate-800">
+                                <th class="py-2.5 px-3">Tenor</th>
+                                <th class="py-2.5 px-2 text-center">Potongan</th>
+                                <th class="py-2.5 px-2 text-center">Bayar</th>
+                                <th class="py-2.5 px-2.5 text-right">Normal</th>
+                                <th class="py-2.5 px-3 text-right text-red-400">Setelah Diskon</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tenorTableBody" class="divide-y divide-slate-800/80 text-slate-300">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-[11px] text-slate-400 text-center">
+                    💡 Ubah pilihan di atas untuk melihat simulasi kredit secara langsung dan akurat.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="bg-slate-950 border-t border-slate-800/80 py-4 text-center text-xs text-slate-400">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+            <span class="font-black text-white">TIM KLEWANG</span>
+            <span class="text-slate-600">•</span>
+            <span>MPM MOTOR HONDA BATAM</span>
+        </div>
+        <p class="text-[11px] text-slate-500">Kalkulator & Simulasi Kredit Motor Honda Terpercaya</p>
+    </div>
+</footer>
+
+<script>
+// Database Price List Lengkap Sesuai Dokumen Brosur Resmi
+const databaseMotor = {
+    "beat_cbs": {
+        name: "NEW BEAT SPORTY CBS PLUS",
+        otr: 19098500,
+        defaultVoucher: 200000,
+        bonus: "Free Paket Accessories Rubber Step Floor + Garnish CVR Muffler + Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 1, pay: 23 },
+            { label: "30 Bulan", months: 30, cut: 1, pay: 29 },
+            { label: "36 Bulan", months: 36, cut: 1, pay: 35 },
+            { label: "42 Bulan", months: 42, cut: 1, pay: 41 },
+            { label: "48 Bulan", months: 48, cut: 1, pay: 47 }
+        ],
+        dpRates: {
+            1800000: { 12: 1970000, 18: 1460000, 24: 1213000, 30: 1066000, 36: 947000, 42: 874000, 48: 823000 },
+            1900000: { 12: 1959000, 18: 1452000, 24: 1206000, 30: 1061000, 36: 942000, 42: 870000, 48: 819000 },
+            2000000: { 12: 1949000, 18: 1445000, 24: 1200000, 30: 1056000, 36: 937000, 42: 866000, 48: 814000 },
+            2100000: { 12: 1938000, 18: 1437000, 24: 1194000, 30: 1050000, 36: 933000, 42: 861000, 48: 810000 },
+            2200000: { 12: 1928000, 18: 1430000, 24: 1188000, 30: 1045000, 36: 928000, 42: 857000, 48: 806000 },
+            2300000: { 12: 1918000, 18: 1423000, 24: 1182000, 30: 1040000, 36: 923000, 42: 853000, 48: 802000 },
+            2400000: { 12: 1907000, 18: 1415000, 24: 1176000, 30: 1034000, 36: 919000, 42: 848000, 48: 798000 },
+            2500000: { 12: 1897000, 18: 1408000, 24: 1170000, 30: 1029000, 36: 914000, 42: 844000, 48: 794000 },
+            2600000: { 12: 1887000, 18: 1400000, 24: 1164000, 30: 1024000, 36: 909000, 42: 840000, 48: 790000 },
+            2700000: { 12: 1876000, 18: 1393000, 24: 1157000, 30: 1018000, 36: 905000, 42: 835000, 48: 786000 },
+            2800000: { 12: 1866000, 18: 1385000, 24: 1151000, 30: 1013000, 36: 900000, 42: 831000, 48: 782000 },
+            2900000: { 12: 1855000, 18: 1378000, 24: 1145000, 30: 1008000, 36: 895000, 42: 827000, 48: 778000 },
+            3000000: { 12: 1845000, 18: 1370000, 24: 1139000, 30: 1003000, 36: 891000, 42: 822000, 48: 774000 },
+            3500000: { 12: 1793000, 18: 1333000, 24: 1108000, 30: 976000,  36: 867000, 42: 801000, 48: 753000 },
+            4000000: { 12: 1741000, 18: 1296000, 24: 1078000, 30: 949000,  36: 844000, 42: 779000, 48: 733000 },
+            5000000: { 12: 1638000, 18: 1221000, 24: 1016000, 30: 896000,  36: 797000, 42: 736000, 48: 692000 },
+            6000000: { 12: 1534000, 18: 1146000, 24: 955000,  30: 843000,  36: 750000, 42: 692000, 48: 651000 }
+        }
+    },
+    "beat_deluxe_iss": {
+        name: "NEW BEAT SPORTY DELUXE CBS ISS PLUS",
+        otr: 19807500,
+        defaultVoucher: 300000,
+        bonus: "Free Paket Accessories Rubber Step Floor + Garnish CVR Muffler + Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 1, pay: 23 },
+            { label: "30 Bulan", months: 30, cut: 1, pay: 29 },
+            { label: "36 Bulan", months: 36, cut: 1, pay: 35 },
+            { label: "42 Bulan", months: 42, cut: 1, pay: 41 },
+            { label: "48 Bulan", months: 48, cut: 1, pay: 47 }
+        ],
+        dpRates: {
+            2000000: { 12: 2105000, 18: 1527000, 24: 1262000, 30: 1046000, 36: 950000, 42: 839000, 48: 784000 },
+            2100000: { 12: 2094000, 18: 1520000, 24: 1256000, 30: 1041000, 36: 945000, 42: 835000, 48: 781000 },
+            2200000: { 12: 2083000, 18: 1512000, 24: 1249000, 30: 1036000, 36: 940000, 42: 831000, 48: 777000 },
+            2300000: { 12: 2072000, 18: 1505000, 24: 1243000, 30: 1030000, 36: 936000, 42: 827000, 48: 773000 },
+            2400000: { 12: 2062000, 18: 1497000, 24: 1237000, 30: 1025000, 36: 931000, 42: 823000, 48: 769000 },
+            2500000: { 12: 2051000, 18: 1489000, 24: 1231000, 30: 1020000, 36: 927000, 42: 819000, 48: 765000 },
+            3000000: { 12: 1997000, 18: 1451000, 24: 1200000, 30: 995000,  36: 904000, 42: 799000, 48: 746000 },
+            3500000: { 12: 1943000, 18: 1413000, 24: 1168000, 30: 970000,  36: 881000, 42: 779000, 48: 727000 },
+            4000000: { 12: 1889000, 18: 1375000, 24: 1137000, 30: 944000,  36: 858000, 42: 758000, 48: 709000 },
+            5000000: { 12: 1781000, 18: 1299000, 24: 1075000, 30: 893000,  36: 812000, 42: 718000, 48: 671000 },
+            6000000: { 12: 1673000, 18: 1223000, 24: 1013000, 30: 843000,  36: 767000, 42: 677000, 48: 633000 }
+        }
+    },
+    "beat_smartkey": {
+        name: "NEW BEAT SPORTY DELUXE SMART KEY PLUS",
+        otr: 20284500,
+        defaultVoucher: 200000,
+        bonus: "Free Paket Accessories Rubber Step Floor + Garnish CVR Muffler + Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 1, pay: 23 },
+            { label: "30 Bulan", months: 30, cut: 1, pay: 29 },
+            { label: "36 Bulan", months: 36, cut: 1, pay: 35 },
+            { label: "42 Bulan", months: 42, cut: 1, pay: 41 },
+            { label: "48 Bulan", months: 48, cut: 1, pay: 47 }
+        ],
+        dpRates: {
+            2100000: { 12: 2150000, 18: 1564000, 24: 1284000, 30: 1065000, 36: 963000, 42: 884000, 48: 829000 },
+            2200000: { 12: 2139000, 18: 1556000, 24: 1278000, 30: 1060000, 36: 959000, 42: 880000, 48: 825000 },
+            2300000: { 12: 2128000, 18: 1548000, 24: 1272000, 30: 1055000, 36: 954000, 42: 876000, 48: 821000 },
+            2400000: { 12: 2117000, 18: 1541000, 24: 1265000, 30: 1050000, 36: 950000, 42: 872000, 48: 817000 },
+            2500000: { 12: 2106000, 18: 1533000, 24: 1259000, 30: 1045000, 36: 945000, 42: 867000, 48: 813000 },
+            3000000: { 12: 2052000, 18: 1495000, 24: 1228000, 30: 1019000, 36: 922000, 42: 846000, 48: 794000 },
+            3500000: { 12: 1998000, 18: 1457000, 24: 1197000, 30: 994000,  36: 900000, 42: 826000, 48: 774000 },
+            4000000: { 12: 1944000, 18: 1419000, 24: 1166000, 30: 969000,  36: 877000, 42: 805000, 48: 754000 },
+            5000000: { 12: 1836000, 18: 1342000, 24: 1104000, 30: 918000,  36: 831000, 42: 763000, 48: 715000 },
+            6000000: { 12: 1728000, 18: 1266000, 24: 1042000, 30: 867000,  36: 786000, 42: 721000, 48: 676000 }
+        }
+    },
+    "beat_street": {
+        name: "NEW BEAT STREET (PLUS) MMR",
+        otr: 19596500,
+        defaultVoucher: 100000,
+        bonus: "Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 1, pay: 23 },
+            { label: "30 Bulan", months: 30, cut: 1, pay: 29 },
+            { label: "36 Bulan", months: 36, cut: 1, pay: 35 }
+        ],
+        dpRates: {
+            1800000: { 12: 2111000, 18: 1532000, 24: 1255000, 30: 1043000, 36: 932000 },
+            1900000: { 12: 2100000, 18: 1525000, 24: 1249000, 30: 1038000, 36: 928000 },
+            2000000: { 12: 2090000, 18: 1517000, 24: 1243000, 30: 1033000, 36: 923000 },
+            2500000: { 12: 2035000, 18: 1479000, 24: 1212000, 30: 1007000, 36: 901000 },
+            3000000: { 12: 1981000, 18: 1441000, 24: 1181000, 30: 982000,  36: 878000 },
+            3500000: { 12: 1927000, 18: 1403000, 24: 1150000, 30: 957000,  36: 856000 },
+            4000000: { 12: 1873000, 18: 1364000, 24: 1119000, 30: 932000,  36: 833000 },
+            5000000: { 12: 1765000, 18: 1288000, 24: 1057000, 30: 881000,  36: 788000 },
+            6000000: { 12: 1656000, 18: 1212000, 24: 995000,  30: 830000,  36: 743000 }
+        }
+    },
+    "scoopy_fashion": {
+        name: "NEW SCOOPY FASHION",
+        otr: 22023000,
+        defaultVoucher: 200000,
+        bonus: "Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 2, pay: 22 },
+            { label: "30 Bulan", months: 30, cut: 2, pay: 28 },
+            { label: "36 Bulan", months: 36, cut: 2, pay: 34 },
+            { label: "42 Bulan", months: 42, cut: 2, pay: 40 },
+            { label: "48 Bulan", months: 48, cut: 2, pay: 46 }
+        ],
+        dpRates: {
+            2200000: { 12: 2253000, 18: 1668000, 24: 1416000, 30: 1182000, 36: 1083000, 42: 1000000, 48: 941000 },
+            2300000: { 12: 2242000, 18: 1661000, 24: 1410000, 30: 1177000, 36: 1078000, 42: 995000,  48: 937000 },
+            2400000: { 12: 2232000, 18: 1653000, 24: 1404000, 30: 1171000, 36: 1073000, 42: 991000,  48: 933000 },
+            2500000: { 12: 2221000, 18: 1645000, 24: 1397000, 30: 1166000, 36: 1068000, 42: 987000,  48: 929000 },
+            2600000: { 12: 2211000, 18: 1638000, 24: 1391000, 30: 1161000, 36: 1064000, 42: 982000,  48: 925000 },
+            3000000: { 12: 2169000, 18: 1608000, 24: 1366000, 30: 1140000, 36: 1045000, 42: 965000,  48: 908000 },
+            3500000: { 12: 2117000, 18: 1570000, 24: 1334000, 30: 1114000, 36: 1021000, 42: 943000,  48: 888000 },
+            4000000: { 12: 2065000, 18: 1532000, 24: 1303000, 30: 1088000, 36: 997000,  42: 921000,  48: 867000 },
+            5000000: { 12: 1961000, 18: 1457000, 24: 1239000, 30: 1036000, 36: 950000,  42: 877000,  48: 826000 },
+            6500000: { 12: 1805000, 18: 1344000, 24: 1145000, 30: 958000,  36: 879000,  42: 811000,  48: 764000 }
+        }
+    },
+    "scoopy_stylish": {
+        name: "NEW SCOOPY STYLISH PLUS",
+        otr: 23242000,
+        defaultVoucher: 200000,
+        bonus: "Free Paket Accessories Panel Step Floor + Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 2, pay: 22 },
+            { label: "30 Bulan", months: 30, cut: 2, pay: 28 },
+            { label: "36 Bulan", months: 36, cut: 2, pay: 34 },
+            { label: "42 Bulan", months: 42, cut: 2, pay: 40 },
+            { label: "48 Bulan", months: 48, cut: 2, pay: 46 }
+        ],
+        dpRates: {
+            2300000: { 12: 2372000, 18: 1755000, 24: 1492000, 30: 1244000, 36: 1136000, 42: 1048000, 48: 987000 },
+            2400000: { 12: 2361000, 18: 1748000, 24: 1486000, 30: 1239000, 36: 1131000, 42: 1044000, 48: 983000 },
+            2500000: { 12: 2351000, 18: 1740000, 24: 1480000, 30: 1234000, 36: 1126000, 42: 1040000, 48: 979000 },
+            3000000: { 12: 2299000, 18: 1702000, 24: 1448000, 30: 1208000, 36: 1103000, 42: 1018000, 48: 958000 },
+            3500000: { 12: 2247000, 18: 1665000, 24: 1416000, 30: 1181000, 36: 1079000, 42: 996000,  48: 938000 },
+            4000000: { 12: 2195000, 18: 1627000, 24: 1385000, 30: 1155000, 36: 1055000, 42: 974000,  48: 917000 },
+            5000000: { 12: 2090000, 18: 1551000, 24: 1321000, 30: 1103000, 36: 1008000, 42: 930000,  48: 876000 },
+            6500000: { 12: 1934000, 18: 1438000, 24: 1227000, 30: 1025000, 36: 937000,  42: 865000,  48: 814000 }
+        }
+    },
+    "stylo_cbs": {
+        name: "NEW STYLO 160 CBS (MF1)",
+        otr: 28004000,
+        defaultVoucher: 0,
+        bonus: "Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 0, pay: 24 },
+            { label: "30 Bulan", months: 30, cut: 0, pay: 30 },
+            { label: "36 Bulan", months: 36, cut: 0, pay: 36 },
+            { label: "42 Bulan", months: 42, cut: 0, pay: 42 },
+            { label: "48 Bulan", months: 48, cut: 0, pay: 48 }
+        ],
+        dpRates: {
+            2300000: { 12: 2959000, 18: 2169000, 24: 1741000, 30: 1486000, 36: 1348000, 42: 1266000, 48: 1191000 },
+            2500000: { 12: 2937000, 18: 2154000, 24: 1728000, 30: 1476000, 36: 1339000, 42: 1257000, 48: 1183000 },
+            3000000: { 12: 2884000, 18: 2115000, 24: 1698000, 30: 1450000, 36: 1316000, 42: 1235000, 48: 1163000 },
+            3500000: { 12: 2830000, 18: 2077000, 24: 1667000, 30: 1424000, 36: 1293000, 42: 1214000, 48: 1142000 },
+            4000000: { 12: 2777000, 18: 2039000, 24: 1637000, 30: 1398000, 36: 1270000, 42: 1192000, 48: 1122000 },
+            5000000: { 12: 2669000, 18: 1962000, 24: 1576000, 30: 1347000, 36: 1223000, 42: 1148000, 48: 1081000 },
+            6000000: { 12: 2562000, 18: 1885000, 24: 1515000, 30: 1296000, 36: 1177000, 42: 1105000, 48: 1040000 }
+        }
+    },
+    "stylo_abs": {
+        name: "NEW STYLO 160 ABS (MG1)",
+        otr: 30123000,
+        defaultVoucher: 0,
+        bonus: "Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 0, pay: 24 },
+            { label: "30 Bulan", months: 30, cut: 0, pay: 30 },
+            { label: "36 Bulan", months: 36, cut: 0, pay: 36 },
+            { label: "42 Bulan", months: 42, cut: 0, pay: 42 },
+            { label: "48 Bulan", months: 48, cut: 0, pay: 48 }
+        ],
+        dpRates: {
+            2500000: { 12: 3173000, 18: 2325000, 24: 1862000, 30: 1598000, 36: 1458000, 42: 1354000, 48: 1274000 },
+            3000000: { 12: 3119000, 18: 2286000, 24: 1832000, 30: 1572000, 36: 1435000, 42: 1332000, 48: 1254000 },
+            3500000: { 12: 3065000, 18: 2248000, 24: 1801000, 30: 1546000, 36: 1411000, 42: 1310000, 48: 1233000 },
+            4000000: { 12: 3012000, 18: 2209000, 24: 1771000, 30: 1520000, 36: 1388000, 42: 1288000, 48: 1213000 },
+            5000000: { 12: 2905000, 18: 2132000, 24: 1710000, 30: 1469000, 36: 1341000, 42: 1245000, 48: 1172000 },
+            6200000: { 12: 2776000, 18: 2040000, 24: 1636000, 30: 1407000, 36: 1285000, 42: 1193000, 48: 1122000 }
+        }
+    },
+    "vario_160_cbs": {
+        name: "NEW VARIO 160 EVO CBS",
+        otr: 26822000,
+        defaultVoucher: 200000,
+        bonus: "Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 1, pay: 23 },
+            { label: "30 Bulan", months: 30, cut: 1, pay: 29 },
+            { label: "36 Bulan", months: 36, cut: 1, pay: 35 },
+            { label: "42 Bulan", months: 42, cut: 1, pay: 41 },
+            { label: "48 Bulan", months: 48, cut: 1, pay: 47 }
+        ],
+        dpRates: {
+            2500000: { 12: 2831000, 18: 2041000, 24: 1745000, 30: 1412000, 36: 1296000, 42: 1214000, 48: 1144000 },
+            2600000: { 12: 2821000, 18: 2033000, 24: 1739000, 30: 1407000, 36: 1291000, 42: 1210000, 48: 1140000 },
+            2700000: { 12: 2810000, 18: 2026000, 24: 1732000, 30: 1402000, 36: 1286000, 42: 1206000, 48: 1136000 },
+            3000000: { 12: 2777000, 18: 2003000, 24: 1713000, 30: 1386000, 36: 1272000, 42: 1192000, 48: 1123000 },
+            3500000: { 12: 2723000, 18: 1965000, 24: 1681000, 30: 1360000, 36: 1249000, 42: 1170000, 48: 1102000 },
+            4000000: { 12: 2669000, 18: 1927000, 24: 1648000, 30: 1335000, 36: 1225000, 42: 1148000, 48: 1082000 },
+            5000000: { 12: 2561000, 18: 1851000, 24: 1584000, 30: 1283000, 36: 1179000, 42: 1104000, 48: 1040000 },
+            7000000: { 12: 2345000, 18: 1698000, 24: 1455000, 30: 1181000, 36: 1085000, 42: 1016000, 48: 957000 }
+        }
+    },
+    "vario_160_abs": {
+        name: "NEW VARIO 160 EVO ABS",
+        otr: 29024000,
+        defaultVoucher: 200000,
+        bonus: "Jaket Cari Aman + Plat Holder",
+        tenors: [
+            { label: "12 Bulan", months: 12, cut: 0, pay: 12 },
+            { label: "18 Bulan", months: 18, cut: 0, pay: 18 },
+            { label: "24 Bulan", months: 24, cut: 1, pay: 23 },
+            { label: "30 Bulan", months: 30, cut: 1, pay: 29 },
+            { label: "36 Bulan", months: 36, cut: 1, pay: 35 },
+            { label: "42 Bulan", months: 42, cut: 1, pay: 41 },
+            { label: "48 Bulan", months: 48, cut: 1, pay: 47 }
+        ],
+        dpRates: {
+            2600000: { 12: 3065000, 18: 2212000, 24: 1866000, 30: 1518000, 36: 1400000, 42: 1294000, 48: 1218000 },
+            2700000: { 12: 3054000, 18: 2204000, 24: 1859000, 30: 1512000, 36: 1396000, 42: 1290000, 48: 1214000 },
+            2800000: { 12: 3044000, 18: 2197000, 24: 1853000, 30: 1507000, 36: 1391000, 42: 1286000, 48: 1210000 },
+            3000000: { 12: 3022000, 18: 2181000, 24: 1840000, 30: 1497000, 36: 1382000, 42: 1277000, 48: 1201000 },
+            3500000: { 12: 2968000, 18: 2143000, 24: 1809000, 30: 1472000, 36: 1358000, 42: 1255000, 48: 1181000 },
+            4000000: { 12: 2914000, 18: 2105000, 24: 1777000, 30: 1446000, 36: 1335000, 42: 1234000, 48: 1161000 },
+            5000000: { 12: 2806000, 18: 2029000, 24: 1713000, 30: 1395000, 36: 1288000, 42: 1190000, 48: 1120000 },
+            7000000: { 12: 2590000, 18: 1876000, 24: 1586000, 30: 1293000, 36: 1194000, 42: 1104000, 48: 1038000 }
+        }
+    }
+};
+
+// Application State
+let voucherMode = "auto";
+let customVoucherValue = 0;
+let currentDiscountPerMonth = 0;
+
+// DOM Elements
+const motorSelect = document.getElementById("motorSelect");
+const dpSelect = document.getElementById("dpSelect");
+const tenorSelect = document.getElementById("tenorSelect");
+const tenorTableBody = document.getElementById("tenorTableBody");
+const defaultVoucherLabel = document.getElementById("defaultVoucherLabel");
+const activeVoucherTag = document.getElementById("activeVoucherTag");
+const activeDiscountTag = document.getElementById("activeDiscountTag");
+const customVoucherInput = document.getElementById("customVoucherInput");
+const customDiscountInput = document.getElementById("customDiscountInput");
+const voucherButtons = document.querySelectorAll(".btn-voucher");
+const discountButtons = document.querySelectorAll(".btn-discount");
+const copySummaryBtn = document.getElementById("copySummaryBtn");
+const copyStatusText = document.getElementById("copyStatusText");
+
+function formatRupiah(num) {
+    return "Rp " + Number(num).toLocaleString("id-ID");
+}
+
+function init() {
+    motorSelect.innerHTML = "";
+    Object.keys(databaseMotor).forEach(key => {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = databaseMotor[key].name;
+        motorSelect.appendChild(option);
+    });
+
+    // Preset Voucher Button Listener
+    voucherButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            voucherButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            customVoucherInput.value = "";
+
+            const val = btn.getAttribute("data-voucher");
+            if (val === "auto") {
+                voucherMode = "auto";
+            } else {
+                voucherMode = "fixed";
+                customVoucherValue = parseInt(val) || 0;
+            }
+            renderAll();
+        });
+    });
+
+    // Custom Voucher Input Listener
+    customVoucherInput.addEventListener("input", (e) => {
+        voucherButtons.forEach(b => b.classList.remove("active"));
+        voucherMode = "custom";
+        const val = parseInt(e.target.value) || 0;
+        customVoucherValue = Math.max(0, val);
+        renderAll();
+    });
+
+    // Discount Button Listener
+    discountButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            discountButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            customDiscountInput.value = "";
+            currentDiscountPerMonth = parseInt(btn.getAttribute("data-discount")) || 0;
+            renderAll();
+        });
+    });
+
+    // Custom Discount Input Listener
+    customDiscountInput.addEventListener("input", (e) => {
+        discountButtons.forEach(b => b.classList.remove("active"));
+        const val = parseInt(e.target.value) || 0;
+        currentDiscountPerMonth = Math.max(0, val);
+        renderAll();
+    });
+
+    // Copy Simulation Summary
+    copySummaryBtn.addEventListener("click", copySimulationText);
+
+    handleMotorChange();
+}
+
+function handleMotorChange() {
+    const motor = databaseMotor[motorSelect.value];
+
+    // Perbarui label voucher bawaan
+    defaultVoucherLabel.textContent = motor.defaultVoucher > 0 ? formatRupiah(motor.defaultVoucher) : "Rp 0 (Normal)";
+
+    // Isi Dropdown DP
+    dpSelect.innerHTML = "";
+    Object.keys(motor.dpRates).forEach(dp => {
+        const opt = document.createElement("option");
+        opt.value = dp;
+        opt.textContent = `${formatRupiah(dp)} (DP Brosur)`;
+        dpSelect.appendChild(opt);
+    });
+
+    // Isi Dropdown Tenor
+    tenorSelect.innerHTML = "";
+    motor.tenors.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.months;
+        opt.textContent = `${t.label} (Cukup Bayar ${t.pay}x)`;
+        tenorSelect.appendChild(opt);
+    });
+
+    renderAll();
+}
+
+function getActiveVoucher(motor) {
+    if (voucherMode === "auto") {
+        return motor.defaultVoucher;
+    }
+    return customVoucherValue;
+}
+
+function renderAll() {
+    const motor = databaseMotor[motorSelect.value];
+    const dpNormal = parseInt(dpSelect.value) || parseInt(Object.keys(motor.dpRates)[0]);
+    const selectedMonths = parseInt(tenorSelect.value) || motor.tenors[0].months;
+    const activeTenorObj = motor.tenors.find(t => t.months === selectedMonths) || motor.tenors[0];
+
+    // Hitung Voucher DP & DP Bersih
+    const appliedVoucher = getActiveVoucher(motor);
+    const dpBayarReal = Math.max(0, dpNormal - appliedVoucher);
+
+    // Hitung Angsuran & Diskon Angsuran
+    const installmentNormal = motor.dpRates[dpNormal]?.[selectedMonths] || 0;
+    const installmentFinal = Math.max(0, installmentNormal - currentDiscountPerMonth);
+
+    // Hitung Total Penghematan Konsumen (Voucher DP + Seluruh Bulan Diskon Cicilan)
+    const totalDiskonCicilan = currentDiscountPerMonth * activeTenorObj.pay;
+    const totalPenghematanSemua = appliedVoucher + totalDiskonCicilan;
+
+    // Update Status Tag
+    activeVoucherTag.textContent = appliedVoucher > 0 ? `Voucher: -${formatRupiah(appliedVoucher)}` : "Tanpa Voucher";
+    activeDiscountTag.textContent = currentDiscountPerMonth > 0 ? `Diskon: -${formatRupiah(currentDiscountPerMonth)} / bln` : "Rp 0 / bln";
+
+    // Update Rincian Kolom Kanan
+    document.getElementById("resMotorName").textContent = motor.name;
+    document.getElementById("resOtr").textContent = formatRupiah(motor.otr);
+    document.getElementById("resDpNormal").textContent = formatRupiah(dpNormal);
+    document.getElementById("resVoucherApplied").textContent = appliedVoucher > 0 ? `-${formatRupiah(appliedVoucher)}` : "Rp 0";
+    document.getElementById("resDpBayar").textContent = formatRupiah(dpBayarReal);
+    document.getElementById("resPotongan").textContent = activeTenorObj.cut > 0 ? `${activeTenorObj.cut} Bulan` : "Tidak Ada";
+    document.getElementById("resTenorText").textContent = `${activeTenorObj.pay}x Pembayaran`;
+    document.getElementById("resBonusText").textContent = motor.bonus;
+
+    // Angsuran Bersih
+    document.getElementById("resAngsuranFinal").textContent = formatRupiah(installmentFinal);
+    const originalBadge = document.getElementById("resOriginalBadge");
+    if (currentDiscountPerMonth > 0) {
+        originalBadge.classList.remove("hidden");
+        document.getElementById("resAngsuranNormal").textContent = formatRupiah(installmentNormal);
+    } else {
+        originalBadge.classList.add("hidden");
+    }
+
+    // Total Hemat Banner
+    document.getElementById("resTotalHematSemua").textContent = formatRupiah(totalPenghematanSemua);
+
+    // Update Label Tabel
+    document.getElementById("tableDpLabel").textContent = formatRupiah(dpBayarReal);
+    document.getElementById("tableDiscLabel").textContent = currentDiscountPerMonth > 0 ? `-${formatRupiah(currentDiscountPerMonth)}/bln` : "Rp 0";
+
+    // Render Tabel Perbandingan Semua Tenor
+    tenorTableBody.innerHTML = "";
+    motor.tenors.forEach(t => {
+        const normalRate = motor.dpRates[dpNormal]?.[t.months] || 0;
+        const finalRate = Math.max(0, normalRate - currentDiscountPerMonth);
+        const isSelected = t.months === selectedMonths;
+
+        const tr = document.createElement("tr");
+        tr.className = isSelected ? "bg-red-950/50 font-bold text-white border-l-4 border-red-500" : "hover:bg-slate-800/40 transition-colors";
+
+        tr.innerHTML = `
+            <td class="py-2.5 px-3 flex items-center gap-1.5">
+                ${isSelected ? '<span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>' : ''}
+                <span class="${isSelected ? 'text-red-400 font-extrabold' : ''}">${t.months} Bln</span>
+            </td>
+            <td class="py-2.5 px-2 text-center">
+                ${t.cut > 0 ? `<span class="bg-blue-950/80 text-blue-300 border border-blue-500/40 text-[10px] px-1.5 py-0.5 rounded font-semibold">-${t.cut} Bln</span>` : '<span class="text-slate-600 text-xs">-</span>'}
+            </td>
+            <td class="py-2.5 px-2 text-center font-semibold text-slate-300">
+                ${t.pay}x
+            </td>
+            <td class="py-2.5 px-2.5 text-right font-medium text-slate-400 text-xs">
+                ${currentDiscountPerMonth > 0 ? `<del>${formatRupiah(normalRate)}</del>` : formatRupiah(normalRate)}
+            </td>
+            <td class="py-2.5 px-3 text-right font-black ${isSelected ? 'text-red-400 text-sm' : 'text-slate-100'}">
+                ${formatRupiah(finalRate)}
+            </td>
+        `;
+        tenorTableBody.appendChild(tr);
+    });
+}
+
+// Copy Summary Generator
+function copySimulationText() {
+    const motor = databaseMotor[motorSelect.value];
+    const dpNormal = parseInt(dpSelect.value) || parseInt(Object.keys(motor.dpRates)[0]);
+    const selectedMonths = parseInt(tenorSelect.value) || motor.tenors[0].months;
+    const activeTenorObj = motor.tenors.find(t => t.months === selectedMonths) || motor.tenors[0];
+
+    const appliedVoucher = getActiveVoucher(motor);
+    const dpBayarReal = Math.max(0, dpNormal - appliedVoucher);
+    const installmentNormal = motor.dpRates[dpNormal]?.[selectedMonths] || 0;
+    const installmentFinal = Math.max(0, installmentNormal - currentDiscountPerMonth);
+    const totalPenghematan = appliedVoucher + (currentDiscountPerMonth * activeTenorObj.pay);
+
+    const summaryText = 
+`*SIMULASI KREDIT RESMI HONDA*
+*TIM KLEWANG - MPM MOTOR BATAM*
+═════════════════════════════════
+🏍️ *Model:* ${motor.name}
+💰 *Harga OTR:* ${formatRupiah(motor.otr)}
+─────────────────────────────────
+📋 *DP Normal Brosur:* ${formatRupiah(dpNormal)}
+🎟️ *Voucher DP Promo:* -${formatRupiah(appliedVoucher)}
+💵 *DP BAYAR BERSIH:* *${formatRupiah(dpBayarReal)}*
+─────────────────────────────────
+⏱️ *Tenor:* ${activeTenorObj.months} Bulan ${activeTenorObj.cut > 0 ? `(Gratis ${activeTenorObj.cut} Bln / Cukup ${activeTenorObj.pay}x Bayar)` : `(${activeTenorObj.pay}x Bayar)`}
+💸 *Diskon Angsuran:* ${currentDiscountPerMonth > 0 ? `-${formatRupiah(currentDiscountPerMonth)} / bln` : 'Tidak Ada'}
+🔥 *ANGSURAN BERSIH:* *${formatRupiah(installmentFinal)} / bln*
+🎉 *TOTAL PENGHEMATAN:* ${formatRupiah(totalPenghematan)}
+─────────────────────────────────
+🎁 *Bonus:* ${motor.bonus}
+═════════════════════════════════
+_Simulasi kredit resmi Honda MPM Batam Tim Klewang_`;
+
+    const tempInput = document.createElement("textarea");
+    tempInput.value = summaryText;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+        document.execCommand('copy');
+        copyStatusText.classList.remove('hidden');
+        setTimeout(() => {
+            copyStatusText.classList.add('hidden');
+        }, 3000);
+    } catch (err) {
+        console.error('Gagal menyalin:', err);
+    }
+    document.body.removeChild(tempInput);
+}
+
+// Event Listeners
+motorSelect.addEventListener("change", handleMotorChange);
+dpSelect.addEventListener("change", renderAll);
+tenorSelect.addEventListener("change", renderAll);
+
+// Boot application
+window.addEventListener("DOMContentLoaded", init);
+</script>
+
+</body>
+</html>
+```
